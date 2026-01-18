@@ -41,7 +41,7 @@ export function PMBDetailsDialog({
 }: PMBDetailsDialogProps) {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <Shield className="h-5 w-5 text-secondary-foreground" />
@@ -49,7 +49,7 @@ export function PMBDetailsDialog({
                     </DialogTitle>
                 </DialogHeader>
 
-                <ScrollArea className="max-h-[60vh] pr-4">
+                <ScrollArea className="max-h-[80vh] pr-4">
                     <div className="space-y-6 py-4">
 
                         {/* PMB Code - High Visibility */}
