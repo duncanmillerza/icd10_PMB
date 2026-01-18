@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
-import { Loader2, Search, Copy, Trash2, Settings } from 'lucide-react';
+import { Loader2, Search, Copy, Trash2, Settings, CheckSquare, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ICD10Result {
@@ -17,6 +17,7 @@ interface ICD10Result {
   isPMB: boolean;
   basketOfCare: string | null;
   pmbLinks?: any[];
+  notFound?: boolean;
 }
 
 export default function Home() {
@@ -78,8 +79,8 @@ export default function Home() {
           isSequelae: false,
           isPMB: false,
           basketOfCare: null,
-          notFound: true // Custom flag we'll use in render
-        } as ICD10Result & { notFound?: boolean };
+          notFound: true
+        } as ICD10Result;
       });
 
       setResults(finalResults);
@@ -99,6 +100,20 @@ export default function Home() {
       newSet.delete(code);
     }
     setSelectedCodes(newSet);
+  };
+
+  const handleSelectAll = () => {
+    const validResults = results.filter(r => !r.notFound);
+    if (validResults.length === 0) return;
+
+    const allValidSelected = validResults.every(r => selectedCodes.has(r.code));
+
+    if (allValidSelected) {
+      setSelectedCodes(new Set());
+    } else {
+      const newSet = new Set(validResults.map(r => r.code));
+      setSelectedCodes(newSet);
+    }
   };
 
   const handleCopy = async () => {
@@ -137,6 +152,10 @@ export default function Home() {
     setSelectedCodes(new Set());
     setError(null);
   }
+
+  // Derive all selected state for button icon
+  const validResults = results.filter(r => !r.notFound);
+  const allSelected = validResults.length > 0 && validResults.every(r => selectedCodes.has(r.code));
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -220,6 +239,20 @@ T24,2 (will be auto-corrected to T24.2)"
 
               {results.length > 0 && (
                 <div className="flex items-center gap-2">
+                  {/* Select All Button */}
+                  <button
+                    onClick={handleSelectAll}
+                    className={cn(
+                      "flex items-center gap-2 h-9 px-3 rounded-lg border transition-colors text-sm font-medium",
+                      allSelected ? "bg-primary/10 border-primary/20 text-primary hover:bg-primary/20" : "border-border bg-background hover:bg-muted text-muted-foreground hover:text-foreground"
+                    )}
+                    title={allSelected ? "Deselect All" : "Select All"}
+                  >
+                    {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+                    <span className="hidden sm:inline">{allSelected ? "Deselect All" : "Select All"}</span>
+                  </button>
+
+                  {/* Settings Button */}
                   <button
                     onClick={() => setShowCopySettings(!showCopySettings)}
                     className={cn(
@@ -230,6 +263,8 @@ T24,2 (will be auto-corrected to T24.2)"
                   >
                     <Settings className="h-4 w-4" />
                   </button>
+
+                  {/* Copy Button */}
                   <button
                     onClick={handleCopy}
                     disabled={selectedCodes.size === 0}
@@ -321,9 +356,9 @@ T24,2 (will be auto-corrected to T24.2)"
                   isSelected={selectedCodes.has(code.code)}
                   onSelect={
                     // Disable selection for notfound items
-                    (code as any).notFound ? undefined : (sel) => toggleSelection(code.code, sel)
+                    code.notFound ? undefined : (sel) => toggleSelection(code.code, sel)
                   }
-                  isNotFound={(code as any).notFound}
+                  isNotFound={code.notFound}
                 />
               ))}
             </div>
