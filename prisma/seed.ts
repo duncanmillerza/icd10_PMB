@@ -54,67 +54,89 @@ async function main() {
     console.log(`Inserted ${codesToUpsert.length} codes.`);
 
 
+
+    // --- Sheet 3: PMB Master List ---
+    const sheet3 = workbook.Sheets['Sheet3'];
+    const pmbDefinitions = [];
+    const pmbMap = new Map<string, { description: string, basket: string }>();
+
+    if (sheet3) {
+        console.log('Parsing Sheet 3 (PMB Master List)...');
+        const data3 = XLSX.utils.sheet_to_json(sheet3);
+
+        for (const row of data3 as any[]) {
+            // Headers: 'PMB Code', 'PMB Description', 'PMB Basket of Care'
+            const code = row['PMB Code'] ? String(row['PMB Code']).trim() : null;
+            if (!code) continue;
+
+            const def = {
+                code,
+                description: row['PMB Description'] ? String(row['PMB Description']).trim() : '',
+                basketOfCare: row['PMB Basket of Care'] ? String(row['PMB Basket of Care']).trim() : '',
+            };
+
+            pmbDefinitions.push(def);
+            pmbMap.set(code, { description: def.description, basket: def.basketOfCare });
+        }
+
+        await prisma.pMBDefinition.deleteMany({});
+        await prisma.pMBDefinition.createMany({ data: pmbDefinitions });
+        console.log(`Inserted ${pmbDefinitions.length} PMB Definitions.`);
+    } else {
+        console.warn('Sheet 3 not found!');
+    }
+
+
     // --- Sheet 2: PMB Links (Dagger/Asterisk) ---
-    // Need to find the correct sheet name or index. Research showed index 1?
-    // Previous research showed: Sheet Name: SA ICD-10 MIT 2021 (Sheet 1)
-    // Let's look for sheet containing 'PMB Dagger'
-    let sheet2Name = workbook.SheetNames.find(n => n.includes('Dagger') || n.includes('PMB'));
-    if (!sheet2Name && workbook.SheetNames.length > 1) sheet2Name = workbook.SheetNames[1];
+    // User calls this "Sheet 2", script finds it by name "Dagger and Astrix PMB"
+    let sheetLinkName = workbook.SheetNames.find(n => n.includes('Dagger') || n.includes('Astrix'));
+    // Fallback logic
+    if (!sheetLinkName) {
+        // Attempt to find by content? Or just look at index 3 based on inspection
+        if (workbook.SheetNames.length > 3) sheetLinkName = workbook.SheetNames[3];
+    }
 
-    if (sheet2Name) {
-        console.log(`Parsing Sheet 2: ${sheet2Name}`);
-        const sheet2 = workbook.Sheets[sheetName1 === sheet2Name ? workbook.SheetNames[1] : sheet2Name];
-        // Wait, if find returns Sheet 1, forced index 1.
+    if (sheetLinkName) {
+        console.log(`Parsing PMB Links from: ${sheetLinkName}`);
+        const sheetLinks = workbook.Sheets[sheetLinkName];
 
-        const data2 = XLSX.utils.sheet_to_json(sheet2);
-        console.log(`Found ${data2.length} rows in Sheet 2.`);
+        // Use header:1 to get raw arrays because we know column indices roughly or want to be robust
+        const rawDataLinks = XLSX.utils.sheet_to_json(sheetLinks, { header: 1 }) as any[][];
+        // Skip header row
+        const startRowLinks = 1;
 
         const linksToCreate = [];
-        for (const row of data2 as any[]) {
-            // Columns from research: "C70.0+D63.0*", "C70.0" (Dagger?), "D63.0" (Asterisk code?), "Mapping..."
-            // Headers: ICD10_Code, Dagger, Asterisk, Description, Basket
-            // Based on research output: 
-            // [ "C70.0+D63.0*", "C70.0", "D63.0", "Desc", "Basket" ] -> keys might be inferred or we should use header mapping.
-            // Let's rely on column names if possible or indices if headers are weird.
-            // The research output showed valid headers in row 1 possibly?
-            // Research output:
-            // [ "ICD10_Code", "C70.0", "D63.0", "Maligne...", "Basket..." ] <-- NO headers shown in JSON array example for row 2?
-            // Wait, Step 52 output showed: 
-            // ["C70.0+D63.0*", "C70.0", "D63.0", "Desc", "Basket"] as VALUES? 
-            // Ah, `sheet_to_json` by default uses first row as header.
-            // The keys in `row` will be the header names.
-            // I didn't see the headers for Sheet 2 in Step 52, I saw data array-of-arrays because I used {header:1}.
-            // Let's inspect headers in the script or just be robust.
-            // Assuming column 1 = Dagger, column 2 = Asterisk, Column 4 = Basket?
-            // Let's use `header: 'A'` mapping to be safe or inspect keys.
-            // Actually, let's just assume standard column order from the array-of-arrays inspection:
-            // Col 0: Combined, Col 1: Dagger, Col 2: Asterisk, Col 3: Desc, Col 4: Basket, Col 5: Code?
-            // Output 52:
-            // ["C70.0+D63.0*", "C70.0", "D63.0", "Malignan...", "Medical...", "950A"]
-            // So:
-            // 0: Combined
-            // 1: Dagger Code
-            // 2: Asterisk Code
-            // 3: Description
-            // 4: Basket? Wait "Medical..." is long text.
-            // 5: "950A" -> Basket Code?
-
-            // Let's create `PMBLink` from this.
-            // Since keys are unknown, I will read sheet 2 with header:1 again to get array of arrays.
-        }
-        const rawData2 = XLSX.utils.sheet_to_json(sheet2, { header: 1 }) as any[][];
-        // Skip header row if it looks like header
-        const startRow = rawData2[0][0].includes('ICD10') ? 1 : 0;
-
-        for (let i = startRow; i < rawData2.length; i++) {
-            const r = rawData2[i];
+        for (let i = startRowLinks; i < rawDataLinks.length; i++) {
+            const r = rawDataLinks[i];
             if (!r || r.length < 3) continue;
 
+            const dagger = String(r[1]).trim();
+            if (!dagger) continue;
+
+            // In "Dagger and Astrix" sheet:
+            // Col 5 (Index 5) = PMB Code
+            // Col 4 (Index 4) = Basket (legacy/direct)
+            const pmbCode = r[5] ? String(r[5]).trim() : null;
+
+            let basket = r[4] ? String(r[4]).trim() : '';
+            let pmbDesc = '';
+
+            // Lookup Details from Sheet 3 data
+            if (pmbCode && pmbMap.has(pmbCode)) {
+                const details = pmbMap.get(pmbCode)!;
+                // User said: "look up the details... on Sheet 3"
+                // So we override/use Sheet 3 data.
+                basket = details.basket;
+                pmbDesc = details.description;
+            }
+
             linksToCreate.push({
-                daggerCode: String(r[1]).trim(),
+                daggerCode: dagger,
                 asteriskCode: String(r[2]).trim(),
                 description: String(r[3] || '').trim(),
-                basketOfCare: r[5] ? String(r[5]).trim() : (r[4] ? String(r[4]).trim() : ''), // Fallback if basket is in col 4 or 5
+                basketOfCare: basket,
+                pmbCode: pmbCode,
+                pmbDescription: pmbDesc
             });
         }
 

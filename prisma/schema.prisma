@@ -29,4 +29,12 @@ model PMBLink {
   asteriskCode    String
   description     String
   basketOfCare    String
+  pmbCode         String?
+  pmbDescription  String?
+}
+
+model PMBDefinition {
+  code            String @id
+  description     String
+  basketOfCare    String
 }
