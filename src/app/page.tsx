@@ -197,7 +197,7 @@ export default function LandingPage() {
                             <h2 className="text-3xl font-bold tracking-tight text-primary">Get in Touch</h2>
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {/* Card 1: Duncan */}
                             <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center gap-6">
                                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
@@ -234,19 +234,6 @@ export default function LandingPage() {
                                     </a>
                                 </div>
                             </div>
-
-                            {/* Card 4: Website */}
-                            <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center gap-6 md:col-span-2 lg:col-span-1">
-                                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
-                                    <Layout className="h-6 w-6" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-lg text-primary">Website</h3>
-                                    <a href="https://hadedahealth.com" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
-                                        View Prototype Look and Feel
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -255,7 +242,7 @@ export default function LandingPage() {
             <footer className="py-12 px-6 border-t border-border bg-muted/20">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                     <div className="flex items-center gap-4 text-muted-foreground">
-                        <img src="/Wordmark Long Green.svg" alt="Hadeda Health" className="h-6 w-auto opacity-80 grayscale hover:grayscale-0 transition-all cursor-pointer" />
+                        <img src="/Wordmark Long Green.svg" alt="Hadeda Health" className="h-10 w-auto opacity-80 grayscale hover:grayscale-0 transition-all cursor-pointer" />
                         <span className="text-sm">© {new Date().getFullYear()}</span>
                     </div>
                     <div className="flex gap-6 text-sm text-muted-foreground">
