@@ -118,11 +118,14 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                                     e.stopPropagation();
                                     setPmbDetailsOpen(true);
                                 }}
-                                className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-[10px] uppercase font-bold text-secondary-foreground shadow-sm hover:bg-secondary/80 transition-colors"
-                                title="Click for PMB details"
+                                className="inline-flex items-center gap-1.5 rounded-md bg-secondary px-2.5 py-1 text-[10px] uppercase font-bold text-secondary-foreground shadow-sm ring-1 ring-inset ring-secondary-foreground/20 hover:bg-secondary/80 hover:ring-secondary-foreground/40 transition-all hover:scale-105"
+                                title="View PMB Details & Linked Codes"
                             >
                                 <Shield className="h-3 w-3" />
                                 PMB
+                                <span className="ml-0.5 border-l border-secondary-foreground/20 pl-1.5 opacity-70 normal-case tracking-normal font-semibold">
+                                    View
+                                </span>
                             </button>
                         )}
                         {codeData.isDagger && (
@@ -150,59 +153,15 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                 </div>
 
                 {/* Additional Details */}
-                {(codeData.basketOfCare || links.length > 0) && (
+                {codeData.basketOfCare && (
                     <div className="mt-2 ml-7 space-y-2">
-
-                        {codeData.basketOfCare && (
-                            <div className="flex items-center gap-2 text-xs bg-primary/5 p-2 rounded-lg border border-primary/10">
-                                <Shield className="h-3.5 w-3.5 shrink-0 text-primary" />
-                                <div>
-                                    <span className="font-bold text-foreground">Basket: </span>
-                                    <span className="text-foreground/80">{codeData.basketOfCare}</span>
-                                </div>
+                        <div className="flex items-center gap-2 text-xs bg-primary/5 p-2 rounded-lg border border-primary/10">
+                            <Shield className="h-3.5 w-3.5 shrink-0 text-primary" />
+                            <div>
+                                <span className="font-bold text-foreground">Basket: </span>
+                                <span className="text-foreground/80">{codeData.basketOfCare}</span>
                             </div>
-                        )}
-
-                        {links.length > 0 && (
-                            <div className="rounded-lg border border-border bg-muted/30 overflow-hidden">
-                                <div className="bg-muted/50 px-2 py-1.5 border-b border-border flex items-center gap-1.5 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-                                    <BookOpen className="h-3 w-3" />
-                                    PMB Linked Conditions ({links.length})
-                                </div>
-                                <div className="divide-y divide-border/50">
-                                    {displayedLinks.map((link) => (
-                                        <div key={link.id} className="p-2 text-xs hover:bg-muted/50 transition-colors">
-                                            <div className="flex gap-1.5">
-                                                <ArrowRight className="mt-0.5 h-3 w-3 shrink-0 text-muted-foreground" />
-                                                <div>
-                                                    <div className="font-medium text-foreground">
-                                                        <span className="font-mono text-primary">{link.daggerCode} + {link.asteriskCode}</span>:
-                                                        <span className="ml-1 text-muted-foreground">{link.description}</span>
-                                                    </div>
-                                                    {link.basketOfCare && link.basketOfCare !== codeData.basketOfCare && (
-                                                        <div className="mt-0.5 text-[10px] text-primary/80 font-mono">
-                                                            {'->'} Basket: {link.basketOfCare}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {hasManyLinks && (
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setModalOpen(true);
-                                        }}
-                                        className="w-full py-1.5 bg-muted/50 hover:bg-muted text-[10px] font-medium text-primary transition-colors text-center border-t border-border/50"
-                                    >
-                                        View {links.length - 3} more links...
-                                    </button>
-                                )}
-                            </div>
-                        )}
+                        </div>
                     </div>
                 )}
             </div>
