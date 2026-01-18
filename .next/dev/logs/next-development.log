@@ -20,3 +20,25 @@
 [00:20:55.968] Server  LOG     ✓ Compiled in 58ms
 [00:21:22.522] Browser LOG     Searching for: ["C10","I64.2"]
 [00:22:45.511] Server  LOG     ✓ Compiled in 75ms
+[00:28:15.630] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:28:30.093] Browser LOG     Searching for: ["I10"]
+[00:29:23.315] Server  LOG     ✓ Compiled in 163ms
+[00:44:33.061] Server  LOG     ✓ Compiled in 91ms
+[00:44:47.317] Server  LOG     ✓ Compiled in 171ms
+[00:44:47.608] Browser ERROR   uncaughtError: ReferenceError: AutoResizeTextarea is not defined
+[00:45:12.604] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:45:12.660] Server  LOG     ✓ Compiled in 174ms
+[00:45:12.716] Server  ERROR   ⨯ ReferenceError: AutoResizeTextarea is not defined
+[00:45:12.859] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:45:13.007] Browser ERROR   uncaughtError: ReferenceError: AutoResizeTextarea is not defined
+[00:45:14.106] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:45:14.148] Server  LOG     ✓ Compiled in 95ms
+[00:45:14.405] Server  ERROR   ⨯ Error: Objects are not valid as a React child (found: object with keys {$$typeof, render}). If you meant to render a collection of children, use an array instead.
+[00:45:14.502] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:45:14.632] Browser ERROR   uncaughtError: Error: Objects are not valid as a React child (found: object with keys {$$typeof, render}). If you meant to render a collection of children, use an array instead.
+[00:45:41.366] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:45:41.441] Server  LOG     ✓ Compiled in 155ms
+[00:45:41.571] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:45:42.654] Server  LOG     ✓ Compiled in 44ms
+[00:46:19.327] Server  LOG     ✓ Compiled in 201ms
+[00:46:33.253] Server  LOG     ✓ Compiled in 43ms

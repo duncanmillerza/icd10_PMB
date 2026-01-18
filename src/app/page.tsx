@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
+import { AutoResizeTextarea } from '@/components/ui/auto-resize-textarea';
 import { Loader2, Search, Copy, Trash2, Settings, CheckSquare, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -79,7 +80,8 @@ export default function Home() {
           isSequelae: false,
           isPMB: false,
           basketOfCare: null,
-          notFound: true
+          notFound: true,
+          pmbLinks: [] // Add empty array to satisfy type
         } as ICD10Result;
       });
 
@@ -174,11 +176,20 @@ export default function Home() {
               ICD-10 Look-up
             </h1>
           </div>
+
+          <a
+            href="https://www.hadadahealth.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+          >
+            About
+          </a>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6 py-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr,1.5fr]">
+      <main className="mx-auto max-w-5xl px-4 lg:px-6 py-4 lg:py-8">
+        <div className="grid gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-[1fr,1.5fr]">
 
           {/* Left Column: Input */}
           <div className="space-y-4">
@@ -186,9 +197,9 @@ export default function Home() {
               <label htmlFor="input" className="mb-2 block text-sm font-semibold text-foreground">
                 Paste ICD-10 Codes
               </label>
-              <textarea
+              <AutoResizeTextarea
                 id="input"
-                className="min-h-[300px] w-full resize-y rounded-lg border border-input bg-background p-4 font-mono text-sm leading-relaxed focus:border-ring focus:ring-2 focus:ring-ring/20 outline-none transition-all placeholder:text-muted-foreground"
+                className="w-full font-mono text-sm leading-relaxed"
                 placeholder="Paste your codes here...
 Examples:
 G82.5; N31.8

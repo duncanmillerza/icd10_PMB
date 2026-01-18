@@ -17,6 +17,15 @@ export const metadata: Metadata = {
   description: "ICD-10 Code lookup and cleaning tool",
 };
 
+export const viewport = {
+  themeColor: "#2D6356",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // Often requested for "app-like" feel on mobile, though affects accessibility
+  interactiveWidget: 'resizes-content', // Critical for iOS keyboard handling
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
