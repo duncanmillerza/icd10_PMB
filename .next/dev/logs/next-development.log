@@ -53,3 +53,111 @@
 [00:58:23.201] Server  LOG     ✓ Compiled in 77ms
 [00:58:25.131] Server  LOG     ✓ Compiled in 64ms
 [00:58:27.125] Server  LOG     ✓ Compiled in 56ms
+[01:01:37.722] Server  LOG     ✓ Compiled in 39ms
+[01:02:15.646] Server  LOG     ✓ Compiled in 38ms
+[01:02:16.608] Browser ERROR   ./src/app/page.tsx:321:13
+Parsing ecmascript source code failed
+  319 |                 </div>
+  320 |
+> 321 |             {/* Copy Settings Panel */}
+      |             ^
+  322 |               {showCopySettings && results.length > 0 && (
+  323 |                 <div className="rounded-lg border border-border bg-card p-4 shadow-sm space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+  324 |                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+Expected '</', got '{'
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+[01:03:00.314] Server  LOG     ✓ Compiled in 23ms
+[01:03:00.607] Browser ERROR   ./src/app/page.tsx:282:23
+Parsing ecmascript source code failed
+  280 |                         )}
+  281 |                   title={allSelected ? "Deselect All" : "Select All"}
+> 282 |                       >
+      |                       ^
+  283 |                   {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+  284 |                   <span className="hidden sm:inline">{allSelected ? "Deselect All" : "Select All"}</span>
+  285 |                 </button>
+
+Unexpected token. Did you mean `{'>'}` or `&gt;`?
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+[01:03:00.607] Browser ERROR   ./src/app/page.tsx:280:26
+Parsing ecmascript source code failed
+  278 |                     </button>
+  279 |                   </div>
+> 280 |                         )}
+      |                          ^
+  281 |                   title={allSelected ? "Deselect All" : "Select All"}
+  282 |                       >
+  283 |                   {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+[01:03:23.129] Server  LOG     ✓ Compiled in 24ms
+[01:03:23.608] Browser ERROR   ./src/app/page.tsx:282:19
+Parsing ecmascript source code failed
+  280 |                 </div>
+  281 |
+> 282 |                   {/* Select All Button */}
+      |                   ^
+  283 |               <button
+  284 |                 onClick={handleSelectAll}
+  285 |                 className={cn(
+
+Expected '</', got '{'
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+[01:04:04.910] Server  LOG     ✓ Compiled in 22ms
+[01:04:05.608] Browser ERROR   ./src/app/page.tsx:427:19
+Parsing ecmascript source code failed
+  425 |             )}
+  426 |
+> 427 |           </main >
+      |                   ^
+> 428 |         </div >
+      | ^^^^^^^^^
+  429 |         );
+  430 | }
+  431 |
+
+Expected '</', got 'jsx text (
+        )'
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]

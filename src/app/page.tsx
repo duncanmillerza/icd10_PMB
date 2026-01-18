@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
+import { CodeTable } from '@/components/code-table';
 import { AutoResizeTextarea } from '@/components/ui/auto-resize-textarea';
-import { Loader2, Search, Copy, Trash2, Settings, CheckSquare, Square } from 'lucide-react';
+import { Loader2, Search, Copy, Trash2, Settings, CheckSquare, Square, LayoutGrid, Table as TableIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ICD10Result {
@@ -26,6 +27,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<ICD10Result[]>([]);
   const [selectedCodes, setSelectedCodes] = useState<Set<string>>(new Set());
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
   const [error, setError] = useState<string | null>(null);
 
   // Copy Settings State
@@ -252,6 +254,31 @@ T24,2 (will be auto-corrected to T24.2)"
 
               {results.length > 0 && (
                 <div className="flex items-center gap-2">
+                  {/* View Toggle */}
+                  <div className="flex bg-muted rounded-lg p-0.5 border border-border mr-2">
+                    <button
+                      onClick={() => setViewMode('cards')}
+                      className={cn(
+                        "p-1.5 rounded-md transition-all",
+                        viewMode === 'cards' ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+                      )}
+                      title="Card View"
+                    >
+                      <LayoutGrid className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('table')}
+                      className={cn(
+                        "p-1.5 rounded-md transition-all",
+                        viewMode === 'table' ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
+                      )}
+                      title="Table View"
+                    >
+                      <TableIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+
+
                   {/* Select All Button */}
                   <button
                     onClick={handleSelectAll}
@@ -361,20 +388,29 @@ T24,2 (will be auto-corrected to T24.2)"
               </div>
             )}
 
-            <div className="space-y-4">
-              {results.map((code, index) => (
-                <CodeCard
-                  key={`${code.code}-${index}`}
-                  codeData={code}
-                  isSelected={selectedCodes.has(code.code)}
-                  onSelect={
-                    // Disable selection for notfound items OR non-billing items
-                    (code.notFound || !code.validForBilling) ? undefined : (sel) => toggleSelection(code.code, sel)
-                  }
-                  isNotFound={code.notFound}
-                />
-              ))}
-            </div>
+            {/* Results List */}
+            {viewMode === 'table' && results.length > 0 ? (
+              <CodeTable
+                results={results}
+                selectedCodes={selectedCodes}
+                onToggleSelection={toggleSelection}
+              />
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {results.map((result, index) => (
+                  <CodeCard
+                    key={`${result.code}-${index}`}
+                    codeData={result}
+                    isSelected={selectedCodes.has(result.code)}
+                    onSelect={
+                      // Disable selection for notfound items OR non-billing items
+                      (result.notFound || !result.validForBilling) ? undefined : (sel) => toggleSelection(result.code, sel)
+                    }
+                    isNotFound={result.notFound}
+                  />
+                ))}
+              </div>
+            )}
 
             {!loading && results.length > 0 && (
               <div className="mt-8 pt-8 border-t border-border">
