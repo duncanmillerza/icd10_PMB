@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
-import { Loader2, Search, Copy, Trash2 } from 'lucide-react';
+import { Loader2, Search, Copy, Trash2, Settings } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ICD10Result {
   code: string;
@@ -24,6 +25,11 @@ export default function Home() {
   const [results, setResults] = useState<ICD10Result[]>([]);
   const [selectedCodes, setSelectedCodes] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
+
+  // Copy Settings State
+  const [showCopySettings, setShowCopySettings] = useState(false);
+  const [copyFormat, setCopyFormat] = useState<'full' | 'codes'>('full');
+  const [delimiter, setDelimiter] = useState<'newline' | 'comma' | 'pipe' | 'semicolon'>('newline');
 
   const handleSearch = async () => {
     setLoading(true);
@@ -53,7 +59,30 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setResults(data.results || []);
+      const foundResults = data.results || [];
+      const foundCodesMap = new Map(foundResults.map((r: ICD10Result) => [r.code, r]));
+
+      // Map extracted codes to results, filling in "Not Found" placeholders where needed
+      const finalResults = extracted.map((code: string) => {
+        if (foundCodesMap.has(code)) {
+          return foundCodesMap.get(code)!;
+        }
+        // Return a placeholder for not found items
+        return {
+          code,
+          description: 'Not Found',
+          validForBilling: false,
+          validPrimary: false,
+          isAsterisk: false,
+          isDagger: false,
+          isSequelae: false,
+          isPMB: false,
+          basketOfCare: null,
+          notFound: true // Custom flag we'll use in render
+        } as ICD10Result & { notFound?: boolean };
+      });
+
+      setResults(finalResults);
     } catch (err) {
       console.error(err);
       setError('An error occurred while searching. Please try again.');
@@ -76,15 +105,23 @@ export default function Home() {
     if (selectedCodes.size === 0) return;
 
     // Sort results by code order in results array
-    const textToCopy = results
-      .filter(r => selectedCodes.has(r.code))
-      .map(r => {
+    const sortedResults = results.filter(r => selectedCodes.has(r.code));
+    let textToCopy = '';
+
+    if (copyFormat === 'full') {
+      textToCopy = sortedResults.map(r => {
         let line = `${r.code} - ${r.description}`;
         if (r.basketOfCare) line += ` [Basket: ${r.basketOfCare}]`;
         if (r.isPMB) line += ` [PMB]`;
         return line;
-      })
-      .join('\n');
+      }).join('\n');
+    } else {
+      const sep = delimiter === 'newline' ? '\n' :
+        delimiter === 'comma' ? ', ' :
+          delimiter === 'pipe' ? ' | ' :
+            delimiter === 'semicolon' ? '; ' : '\n';
+      textToCopy = sortedResults.map(r => r.code).join(sep);
+    }
 
     try {
       await navigator.clipboard.writeText(textToCopy);
@@ -182,16 +219,79 @@ T24,2 (will be auto-corrected to T24.2)"
               </h2>
 
               {results.length > 0 && (
-                <button
-                  onClick={handleCopy}
-                  disabled={selectedCodes.size === 0}
-                  className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground shadow-sm hover:bg-secondary/90 disabled:opacity-50"
-                >
-                  <Copy className="h-4 w-4" />
-                  Copy Selected ({selectedCodes.size})
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowCopySettings(!showCopySettings)}
+                    className={cn(
+                      "flex items-center justify-center h-9 w-9 rounded-lg border transition-colors",
+                      showCopySettings ? "bg-muted border-border text-foreground" : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                    title="Copy Settings"
+                  >
+                    <Settings className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={handleCopy}
+                    disabled={selectedCodes.size === 0}
+                    className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground shadow-sm hover:bg-secondary/90 disabled:opacity-50"
+                  >
+                    <Copy className="h-4 w-4" />
+                    Copy Selected ({selectedCodes.size})
+                  </button>
+                </div>
               )}
             </div>
+
+            {/* Copy Settings Panel */}
+            {showCopySettings && results.length > 0 && (
+              <div className="rounded-lg border border-border bg-card p-4 shadow-sm space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">
+                      Format
+                    </label>
+                    <div className="flex flex-col gap-2">
+                      <label className="flex items-center gap-2 text-sm cursor-pointer">
+                        <input
+                          type="radio"
+                          checked={copyFormat === 'full'}
+                          onChange={() => setCopyFormat('full')}
+                          className="accent-primary"
+                        />
+                        <span>Code + Description + Details</span>
+                      </label>
+                      <label className="flex items-center gap-2 text-sm cursor-pointer">
+                        <input
+                          type="radio"
+                          checked={copyFormat === 'codes'}
+                          onChange={() => setCopyFormat('codes')}
+                          className="accent-primary"
+                        />
+                        <span>List of Codes Only</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {copyFormat === 'codes' && (
+                    <div>
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">
+                        Delimiter
+                      </label>
+                      <select
+                        value={delimiter}
+                        onChange={(e) => setDelimiter(e.target.value as any)}
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      >
+                        <option value="newline">New Line</option>
+                        <option value="comma">Comma (, )</option>
+                        <option value="pipe">Pipe ( | )</option>
+                        <option value="semicolon">Semicolon (; )</option>
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {error && (
               <div className="rounded-lg bg-destructive/10 p-4 text-sm text-destructive font-medium border border-destructive/20">
@@ -214,12 +314,16 @@ T24,2 (will be auto-corrected to T24.2)"
             )}
 
             <div className="space-y-4">
-              {results.map((code) => (
+              {results.map((code, index) => (
                 <CodeCard
-                  key={code.code}
+                  key={`${code.code}-${index}`}
                   codeData={code}
                   isSelected={selectedCodes.has(code.code)}
-                  onSelect={(sel) => toggleSelection(code.code, sel)}
+                  onSelect={
+                    // Disable selection for notfound items
+                    (code as any).notFound ? undefined : (sel) => toggleSelection(code.code, sel)
+                  }
+                  isNotFound={(code as any).notFound}
                 />
               ))}
             </div>

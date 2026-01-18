@@ -769,6 +769,10 @@
     width: calc(var(--spacing) * 8);
   }
 
+  .w-9 {
+    width: calc(var(--spacing) * 9);
+  }
+
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
@@ -1123,6 +1127,10 @@
 
   .border-success {
     border-color: var(--color-success);
+  }
+
+  .border-transparent {
+    border-color: #0000;
   }
 
   .border-t-transparent {
@@ -1652,6 +1660,10 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .accent-primary {
+    accent-color: var(--color-primary);
+  }
+
   .opacity-20 {
     opacity: .2;
   }
@@ -1723,6 +1735,10 @@
     .ring-warning\/20 {
       --tw-ring-color: color-mix(in oklab, var(--color-warning) 20%, transparent);
     }
+  }
+
+  .ring-offset-background {
+    --tw-ring-offset-color: var(--color-background);
   }
 
   .outline {
