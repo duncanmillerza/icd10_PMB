@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Activity, FileText, CheckCircle2, ShieldCheck, BarChart3, LayoutDashboard, Brain, Calendar, CreditCard, Laptop, Shield, User } from "lucide-react";
+import { ArrowRight, Activity, FileText, CheckCircle2, ShieldCheck, BarChart3, LayoutDashboard, Brain, Calendar, CreditCard, Laptop, Shield, User, Phone, Mail, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
@@ -44,7 +44,7 @@ export default function LandingPage() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                            <Link href="https://hadedahealth.com" target="_blank">
+                            <Link href="mailto:duncan@hadadahealth.com">
                                 <Button size="lg" className="h-12 px-8 text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
                                     Request a Demo
                                 </Button>
@@ -187,6 +187,67 @@ export default function LandingPage() {
                                 Go to ICD-10 Tool <ArrowRight className="ml-2 h-5 w-5" />
                             </Button>
                         </Link>
+                    </div>
+                </section>
+
+                {/* Get in Touch Section */}
+                <section id="contact" className="py-24 px-6 bg-secondary/5">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl font-bold tracking-tight text-primary">Get in Touch</h2>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {/* Card 1: Duncan */}
+                            <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center gap-6">
+                                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                    <User className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-primary">Duncan Miller</h3>
+                                    <p className="text-muted-foreground">Founder & Developer</p>
+                                </div>
+                            </div>
+
+                            {/* Card 2: Email */}
+                            <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center gap-6">
+                                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                    <Mail className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-primary">Email</h3>
+                                    <a href="mailto:duncan@hadadahealth.com" className="text-muted-foreground hover:text-primary transition-colors">
+                                        duncan@hadadahealth.com
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Card 3: Phone */}
+                            <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center gap-6">
+                                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                    <Phone className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-primary">Phone</h3>
+                                    <a href="tel:+27845612171" className="text-muted-foreground hover:text-primary transition-colors">
+                                        +27 84 561 2171
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Card 4: Website */}
+                            <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex items-center gap-6 md:col-span-2 lg:col-span-1">
+                                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                    <Layout className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-primary">Website</h3>
+                                    <a href="https://hadedahealth.com" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+                                        View Prototype Look and Feel
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </main>

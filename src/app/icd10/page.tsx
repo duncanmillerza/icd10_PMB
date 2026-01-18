@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
@@ -179,14 +180,12 @@ export default function Home() {
             </h1>
           </div>
 
-          <a
-            href="https://www.hadadahealth.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/"
             className="text-sm font-medium text-white/80 hover:text-white transition-colors"
           >
             About
-          </a>
+          </Link>
         </div>
       </header>
 
