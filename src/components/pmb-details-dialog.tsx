@@ -54,9 +54,9 @@ export function PMBDetailsDialog({
 
                         {/* PMB Code - High Visibility */}
                         {pmbCode && (
-                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
-                                    PMB Code
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm border-l-4 border-l-primary transition-all hover:shadow-md">
+                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-3">
+                                    <Shield className="h-4 w-4" /> PMB Code
                                 </h4>
                                 <div className="text-3xl font-mono font-bold text-foreground tracking-tight">
                                     {pmbCode}
@@ -66,11 +66,11 @@ export function PMBDetailsDialog({
 
                         {/* Basket of Care */}
                         {basketOfCare && (
-                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
-                                    Basket of Care
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm border-l-4 border-l-secondary-foreground transition-all hover:shadow-md">
+                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-secondary-foreground mb-3">
+                                    <Shield className="h-4 w-4" /> Basket of Care
                                 </h4>
-                                <p className="font-medium text-lg leading-relaxed text-foreground/90">
+                                <p className="font-medium text-base leading-relaxed text-foreground/90">
                                     {basketOfCare}
                                 </p>
                             </div>
@@ -78,11 +78,11 @@ export function PMBDetailsDialog({
 
                         {/* Description */}
                         {pmbDescription && (
-                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
-                                    Description
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm border-l-4 border-l-muted-foreground/40 transition-all hover:shadow-md">
+                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">
+                                    <FileText className="h-4 w-4" /> Description
                                 </h4>
-                                <p className="text-base text-muted-foreground leading-7">
+                                <p className="text-base text-foreground/80 leading-7">
                                     {pmbDescription}
                                 </p>
                             </div>
@@ -90,11 +90,11 @@ export function PMBDetailsDialog({
 
                         {/* Comments */}
                         {pmbComments && (
-                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
-                                    Comments
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm border-l-4 border-l-orange-500/50 transition-all hover:shadow-md">
+                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-600 dark:text-orange-400 mb-3">
+                                    <Info className="h-4 w-4" /> Comments
                                 </h4>
-                                <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                <div className="text-sm text-foreground/80 italic leading-relaxed whitespace-pre-wrap bg-orange-50/50 dark:bg-orange-950/20 p-3 rounded-lg -mx-1">
                                     {pmbComments}
                                 </div>
                             </div>
@@ -102,25 +102,24 @@ export function PMBDetailsDialog({
 
                         {/* Linked Codes */}
                         {links && links.length > 0 && (
-                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm border-l-4 border-l-muted-foreground/20">
                                 <div className="flex items-center justify-between mb-4">
-                                    <h4 className="text-sm font-semibold text-foreground">
-                                        Linked PMB Conditions
+                                    <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                                        <ArrowRight className="h-4 w-4" /> Linked Conditions
                                     </h4>
                                     <Badge variant="secondary" className="font-mono">{links.length}</Badge>
                                 </div>
                                 <div className="grid gap-3">
                                     {links.map((link) => (
-                                        <div key={link.id} className="group relative rounded-lg border border-border hover:border-primary/50 bg-background p-4 transition-all hover:shadow-sm">
+                                        <div key={link.id} className="group relative rounded-lg border border-border hover:border-primary/50 bg-background p-3 transition-all hover:shadow-md cursor-default">
                                             <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                                                <div className="shrink-0 pt-1">
-                                                    <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                                                </div>
                                                 <div className="space-y-1.5 flex-1">
-                                                    <div className="font-mono font-bold text-foreground text-base">
-                                                        {link.daggerCode} <span className="text-muted-foreground mx-1">+</span> {link.asteriskCode}
+                                                    <div className="flex items-baseline gap-2">
+                                                        <div className="font-mono font-bold text-primary text-base">
+                                                            {link.daggerCode} <span className="text-muted-foreground opacity-50">+</span> {link.asteriskCode}
+                                                        </div>
                                                     </div>
-                                                    <div className="text-sm text-muted-foreground leading-snug">
+                                                    <div className="text-sm text-foreground/70 leading-snug">
                                                         {link.description}
                                                     </div>
                                                     {link.basketOfCare && link.basketOfCare !== basketOfCare && (
