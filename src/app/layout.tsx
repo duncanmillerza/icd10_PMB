@@ -13,8 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://hadedahealth.com'),
   title: "Hadeda Health | ICD-10 Look-up",
-  description: "ICD-10 Code lookup and cleaning tool",
+  description: "Advanced ICD-10 Code lookup, PMB details, and cleaning tool for South African healthcare professionals.",
+  openGraph: {
+    title: "Hadeda Health | ICD-10 Look-up",
+    description: "Search, clean, and validate ICD-10 codes with instant PMB & Basket of Care details.",
+    url: 'https://hadedahealth.com',
+    siteName: 'Hadeda Health',
+    locale: 'en_ZA',
+    type: 'website',
+  },
 };
 
 export const viewport = {
