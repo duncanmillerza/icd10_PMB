@@ -105,7 +105,8 @@ export default function Home() {
   };
 
   const handleSelectAll = () => {
-    const validResults = results.filter(r => !r.notFound);
+    // Only select codes that are found AND valid for billing
+    const validResults = results.filter(r => !r.notFound && r.validForBilling);
     if (validResults.length === 0) return;
 
     const allValidSelected = validResults.every(r => selectedCodes.has(r.code));
@@ -156,8 +157,9 @@ export default function Home() {
   }
 
   // Derive all selected state for button icon
-  const validResults = results.filter(r => !r.notFound);
-  const allSelected = validResults.length > 0 && validResults.every(r => selectedCodes.has(r.code));
+  // Only consider selectable codes (found AND validForBilling)
+  const selectableResults = results.filter(r => !r.notFound && r.validForBilling);
+  const allSelected = selectableResults.length > 0 && selectableResults.every(r => selectedCodes.has(r.code));
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -366,8 +368,8 @@ T24,2 (will be auto-corrected to T24.2)"
                   codeData={code}
                   isSelected={selectedCodes.has(code.code)}
                   onSelect={
-                    // Disable selection for notfound items
-                    code.notFound ? undefined : (sel) => toggleSelection(code.code, sel)
+                    // Disable selection for notfound items OR non-billing items
+                    (code.notFound || !code.validForBilling) ? undefined : (sel) => toggleSelection(code.code, sel)
                   }
                   isNotFound={code.notFound}
                 />

@@ -42,3 +42,14 @@
 [00:45:42.654] Server  LOG     ✓ Compiled in 44ms
 [00:46:19.327] Server  LOG     ✓ Compiled in 201ms
 [00:46:33.253] Server  LOG     ✓ Compiled in 43ms
+[00:53:24.335] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:54:28.141] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:54:51.486] Browser LOG     Searching for: ["I64","E10","I10"]
+[00:56:55.644] Browser LOG     Searching for: ["I63.9"]
+[00:57:10.894] Browser LOG     Searching for: ["I63.5"]
+[00:57:57.333] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:58:18.233] Server  LOG     ✓ Compiled in 217ms
+[00:58:21.156] Server  LOG     ✓ Compiled in 132ms
+[00:58:23.201] Server  LOG     ✓ Compiled in 77ms
+[00:58:25.131] Server  LOG     ✓ Compiled in 64ms
+[00:58:27.125] Server  LOG     ✓ Compiled in 56ms

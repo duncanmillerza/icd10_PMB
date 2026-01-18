@@ -40,6 +40,8 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
     const hasManyLinks = links.length > 3;
     const displayedLinks = hasManyLinks ? links.slice(0, 3) : links;
 
+    const isSelectable = codeData.validForBilling && !isNotFound;
+
     if (isNotFound) {
         return (
             <div className="flex items-center gap-4 rounded-xl border border-destructive/50 bg-destructive/10 p-5 shadow-sm">
@@ -59,11 +61,14 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
             <div
                 className={cn(
                     "group relative flex flex-col gap-2 rounded-xl border p-3 transition-all duration-200",
-                    "bg-card shadow-sm hover:shadow-md",
-                    isSelected ? "ring-2 ring-primary border-primary" : "border-border hover:border-primary/50",
+                    "bg-card shadow-sm",
+                    isSelectable ? "hover:shadow-md cursor-pointer" : "opacity-80 cursor-not-allowed bg-muted/30",
+                    isSelected ? "ring-2 ring-primary border-primary" : "border-border",
+                    isSelectable && !isSelected && "hover:border-primary/50",
                     !codeData.validForBilling && "bg-destructive/5 border-destructive/20"
                 )}
                 onClick={(e) => {
+                    if (!isSelectable) return;
                     // Prevent marking as selected if clicking interactive elements inside
                     if ((e.target as HTMLElement).closest('button')) return;
                     onSelect?.(!isSelected)
@@ -72,12 +77,17 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                 {/* Header with Code and Selection */}
                 <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        {onSelect && (
+                        {onSelect && isSelectable && (
                             <div className={cn(
-                                "flex h-5 w-5 items-center justify-center rounded-md border transition-colors cursor-pointer",
+                                "flex h-5 w-5 items-center justify-center rounded-md border transition-colors",
                                 isSelected ? "bg-primary border-primary text-primary-foreground shadow-sm" : "border-muted-foreground/30 bg-background group-hover:border-primary"
                             )}>
                                 {isSelected && <Check className="h-3.5 w-3.5" />}
+                            </div>
+                        )}
+                        {onSelect && !isSelectable && (
+                            <div className="flex h-5 w-5 items-center justify-center rounded-md border border-muted-foreground/10 bg-muted/50 text-muted-foreground/20 cursor-not-allowed">
+                                {/* Disabled empty box */}
                             </div>
                         )}
                         <h3 className="font-mono text-lg font-bold tracking-tight text-foreground bg-muted/30 px-1.5 py-0.5 rounded-md">
