@@ -37,3 +37,6 @@ next-env.d.ts
 
 # prisma
 /src/generated/prisma
+# Do NOT ignore the SQLite DB for this read-only deployment
+# *.db
+# *.db-journal
