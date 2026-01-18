@@ -1,420 +1,142 @@
-'use client';
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, Shield, Users, Activity, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-import { useState } from 'react';
-import { extractCodes } from '@/lib/code-utils';
-import { CodeCard } from '@/components/code-card';
-import { CodeTable } from '@/components/code-table';
-import { AutoResizeTextarea } from '@/components/ui/auto-resize-textarea';
-import { Loader2, Search, Copy, Trash2, Settings, CheckSquare, Square, LayoutGrid, Table as TableIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+export default function LandingPage() {
+    return (
+        <div className="flex flex-col min-h-screen bg-background text-foreground">
+            {/* Navigation */}
+            <header className="px-6 h-16 flex items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md sticky top-0 z-50">
+                <div className="flex items-center gap-2 font-bold text-xl text-primary">
+                    <Activity className="h-6 w-6" />
+                    <span>Hadeda Health</span>
+                </div>
+                <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+                    <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">Features</Link>
+                    <Link href="#security" className="text-muted-foreground hover:text-primary transition-colors">Security</Link>
+                    <Link href="/icd10" className="text-primary font-semibold hover:underline decoration-2 underline-offset-4">ICD-10 Tool</Link>
+                </nav>
+                <div className="flex items-center gap-3">
+                    <Link href="https://hadedahealth.com" target="_blank">
+                        <Button variant="ghost" size="sm">Log In</Button>
+                    </Link>
+                    <Link href="https://hadedahealth.com" target="_blank">
+                        <Button size="sm">Get Started</Button>
+                    </Link>
+                </div>
+            </header>
 
-interface ICD10Result {
-  code: string;
-  description: string;
-  validForBilling: boolean;
-  validPrimary: boolean;
-  isAsterisk: boolean;
-  isDagger: boolean;
-  isSequelae: boolean;
-  isPMB: boolean;
-  basketOfCare: string | null;
-  pmbDescription?: string | null;
-  pmbComments?: string | null;
-  pmbCode?: string | null;
-  pmbLinks?: any[];
-  notFound?: boolean;
+            <main className="flex-1">
+                {/* Hero Section */}
+                <section className="relative pt-20 pb-32 px-6 overflow-hidden">
+                    <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
+                    <div className="max-w-5xl mx-auto text-center space-y-8">
+                        <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-medium text-primary">
+                            <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
+                            Now Available for Private Practice
+                        </div>
+
+                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground text-balance">
+                            Practice Management, <br />
+                            <span className="text-primary">Reimagined.</span>
+                        </h1>
+
+                        <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-balance">
+                            The secure, multi-disciplinary platform designed for South African healthcare professionals. Manage patients, clinical notes, and outcomes with ease.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                            <Link href="https://hadedahealth.com" target="_blank">
+                                <Button size="lg" className="h-12 px-8 text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+                                    Request a Demo
+                                </Button>
+                            </Link>
+                            <Link href="/icd10">
+                                <Button size="lg" variant="outline" className="h-12 px-8 text-base border-primary/20 hover:border-primary/50 hover:bg-primary/5 group">
+                                    Try ICD-10 Look-up
+                                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Feature Grid */}
+                <section id="features" className="py-24 px-6 bg-secondary/5">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl font-bold tracking-tight mb-4">Everything you need to run your practice</h2>
+                            <p className="text-muted-foreground text-lg">Built with input from OTs, Physios, and Speech Therapists.</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            <FeatureCard
+                                icon={<Users className="h-6 w-6 text-primary" />}
+                                title="Patient Management"
+                                description="Streamlined admission, discharge, and daily notes workflow. Track funding and authorization seamlessly."
+                            />
+                            <FeatureCard
+                                icon={<Shield className="h-6 w-6 text-primary" />}
+                                title="POPIA Compliant"
+                                description="Bank-grade security ensures your patient data is protected according to South African regulations."
+                            />
+                            <FeatureCard
+                                icon={<FileText className="h-6 w-6 text-primary" />}
+                                title="Automated Reporting"
+                                description="Generate professional progress reports and discharge summaries in a few clicks."
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                {/* ICD-10 Tool Section (Prominent) */}
+                <section className="py-24 px-6 relative overflow-hidden">
+                    <div className="absolute inset-0 -z-10 bg-primary/5"></div>
+                    <div className="max-w-4xl mx-auto bg-card border border-border rounded-3xl p-8 md:p-12 shadow-xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div className="space-y-4 max-w-lg">
+                            <div className="inline-flex items-center gap-2 font-mono text-sm font-bold text-primary uppercase tracking-wider">
+                                <Activity className="h-4 w-4" /> Free Tool
+                            </div>
+                            <h2 className="text-3xl font-bold">Need to look up an ICD-10 Code?</h2>
+                            <p className="text-muted-foreground">
+                                We've built a powerful, free tool to search codes, verify PMB status, and see Basket of Care details instantly. No login required.
+                            </p>
+                        </div>
+                        <Link href="/icd10">
+                            <Button size="lg" className="h-14 px-8 text-lg shadow-xl shrink-0">
+                                Go to ICD-10 Tool <ArrowRight className="ml-2 h-5 w-5" />
+                            </Button>
+                        </Link>
+                    </div>
+                </section>
+            </main>
+
+            <footer className="py-12 px-6 border-t border-border bg-muted/20">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                        <Activity className="h-5 w-5" />
+                        <span className="font-semibold text-foreground">Hadeda Health</span>
+                        <span className="text-sm">© {new Date().getFullYear()}</span>
+                    </div>
+                    <div className="flex gap-6 text-sm text-muted-foreground">
+                        <Link href="https://hadedahealth.com/terms" className="hover:text-foreground">Terms</Link>
+                        <Link href="https://hadedahealth.com/privacy" className="hover:text-foreground">Privacy</Link>
+                        <Link href="mailto:support@hadedahealth.com" className="hover:text-foreground">Contact</Link>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    );
 }
 
-export default function Home() {
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<ICD10Result[]>([]);
-  const [selectedCodes, setSelectedCodes] = useState<Set<string>>(new Set());
-  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
-  const [error, setError] = useState<string | null>(null);
-
-  // Copy Settings State
-  const [showCopySettings, setShowCopySettings] = useState(false);
-  const [copyFormat, setCopyFormat] = useState<'codes' | 'description'>('codes');
-  const [delimiter, setDelimiter] = useState<'newline' | 'comma' | 'pipe' | 'semicolon'>('pipe');
-
-  const handleSearch = async () => {
-    setLoading(true);
-    setError(null);
-    setResults([]);
-    setSelectedCodes(new Set());
-
-    try {
-      const extracted = extractCodes(input);
-      if (extracted.length === 0) {
-        setLoading(false);
-        return;
-      }
-
-      console.log('Searching for:', extracted);
-
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ codes: extracted }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to search');
-      }
-
-      const data = await response.json();
-      const foundResults = data.results || [];
-      const foundCodesMap = new Map<string, ICD10Result>(foundResults.map((r: ICD10Result) => [r.code, r]));
-
-      // Map extracted codes to results, filling in "Not Found" placeholders where needed
-      const finalResults: ICD10Result[] = extracted.map((code: string) => {
-        if (foundCodesMap.has(code)) {
-          return foundCodesMap.get(code)!;
-        }
-        // Return a placeholder for not found items
-        return {
-          code,
-          description: 'Not Found',
-          validForBilling: false,
-          validPrimary: false,
-          isAsterisk: false,
-          isDagger: false,
-          isSequelae: false,
-          isPMB: false,
-          basketOfCare: null,
-          notFound: true,
-          pmbLinks: []
-        };
-      });
-
-      setResults(finalResults);
-    } catch (err) {
-      console.error(err);
-      setError('An error occurred while searching. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const toggleSelection = (code: string, isSelected: boolean) => {
-    const newSet = new Set(selectedCodes);
-    if (isSelected) {
-      newSet.add(code);
-    } else {
-      newSet.delete(code);
-    }
-    setSelectedCodes(newSet);
-  };
-
-  const handleSelectAll = () => {
-    // Only select codes that are found AND valid for billing
-    const validResults = results.filter(r => !r.notFound && r.validForBilling);
-    if (validResults.length === 0) return;
-
-    const allValidSelected = validResults.every(r => selectedCodes.has(r.code));
-
-    if (allValidSelected) {
-      setSelectedCodes(new Set());
-    } else {
-      const newSet = new Set(validResults.map(r => r.code));
-      setSelectedCodes(newSet);
-    }
-  };
-
-  const handleCopy = async () => {
-    if (selectedCodes.size === 0) return;
-
-    // Sort results by code order in results array
-    const sortedResults = results.filter(r => selectedCodes.has(r.code));
-    let textToCopy = '';
-
-    if (copyFormat === 'description') {
-      textToCopy = sortedResults.map(r => `${r.code} - ${r.description}`).join('\n');
-    } else {
-      const sep = delimiter === 'newline' ? '\n' :
-        delimiter === 'comma' ? ', ' :
-          delimiter === 'pipe' ? ' | ' :
-            delimiter === 'semicolon' ? '; ' : '\n';
-      textToCopy = sortedResults.map(r => r.code).join(sep);
-    }
-
-    try {
-      await navigator.clipboard.writeText(textToCopy);
-      alert('Copied to clipboard!');
-    } catch (err) {
-      console.error('Failed to copy', err);
-    }
-  };
-
-  const clearInput = () => {
-    setInput('');
-    setResults([]);
-    setSelectedCodes(new Set());
-    setError(null);
-  }
-
-  // Derive all selected state for button icon
-  // Only consider selectable codes (found AND validForBilling)
-  const selectableResults = results.filter(r => !r.notFound && r.validForBilling);
-  const allSelected = selectableResults.length > 0 && selectableResults.every(r => selectedCodes.has(r.code));
-
-  return (
-    <div className="min-h-screen bg-background pb-20">
-      {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-border/20 bg-[#2D6356] px-6 py-4 shadow-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <div className="flex items-center gap-3">
-            {/* Logo */}
-            <div className="h-8">
-              <img src="/Wordmark Mono.svg" alt="Hadeda Health" className="h-full w-auto" />
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
+    return (
+        <div className="bg-card border border-border/50 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                {icon}
             </div>
-            {/* Divider */}
-            <div className="h-6 w-px bg-white/20"></div>
-            {/* App Name */}
-            <h1 className="text-lg font-medium text-white/90">
-              ICD-10 Look-up
-            </h1>
-          </div>
-
-          <a
-            href="https://www.hadadahealth.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-          >
-            About
-          </a>
+            <h3 className="text-lg font-bold mb-2">{title}</h3>
+            <p className="text-muted-foreground leading-relaxed">{description}</p>
         </div>
-      </header>
-
-      <main className="mx-auto max-w-5xl px-4 lg:px-6 py-4 lg:py-8">
-        <div className="grid gap-6 lg:gap-8 grid-cols-1 lg:grid-cols-[1fr,1.5fr]">
-
-          {/* Left Column: Input */}
-          <div className="space-y-4">
-            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-              <label htmlFor="input" className="mb-2 block text-sm font-semibold text-foreground">
-                Paste ICD-10 Codes
-              </label>
-              <AutoResizeTextarea
-                id="input"
-                className="w-full font-mono text-sm leading-relaxed"
-                placeholder="Paste your codes here...
-Examples:
-G82.5; N31.8
-K59.2
-T24,2 (will be auto-corrected to T24.2)"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-
-              <div className="mt-4 flex gap-2">
-                <button
-                  onClick={handleSearch}
-                  disabled={loading || !input.trim()}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? <Loader2 className="animate-spin h-4 w-4" /> : <Search className="h-4 w-4" />}
-                  {loading ? 'Processing...' : 'Clean & Search'}
-                </button>
-
-                <button
-                  onClick={clearInput}
-                  disabled={!input}
-                  className="flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-all"
-                  title="Clear"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-border/50 bg-muted/30 p-4 text-xs text-muted-foreground">
-              <p className="font-semibold text-foreground mb-1">Tips:</p>
-              <ul className="list-disc pl-4 space-y-1">
-                <li>Separators like commas, semicolons, and newlines are auto-detected.</li>
-                <li>Codes like "T24,2" are auto-corrected to "T24.2".</li>
-                <li>Results show PMB status and billing validity.</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Right Column: Results */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-foreground">
-                Results
-                {results.length > 0 && <span className="ml-2 text-sm font-normal text-muted-foreground">({results.length} found)</span>}
-              </h2>
-
-              {results.length > 0 && (
-                <div className="flex items-center gap-2">
-                  {/* View Toggle */}
-                  <div className="flex bg-muted rounded-lg p-0.5 border border-border mr-2">
-                    <button
-                      onClick={() => setViewMode('cards')}
-                      className={cn(
-                        "p-1.5 rounded-md transition-all",
-                        viewMode === 'cards' ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                      )}
-                      title="Card View"
-                    >
-                      <LayoutGrid className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => setViewMode('table')}
-                      className={cn(
-                        "p-1.5 rounded-md transition-all",
-                        viewMode === 'table' ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                      )}
-                      title="Table View"
-                    >
-                      <TableIcon className="h-4 w-4" />
-                    </button>
-                  </div>
-
-
-                  {/* Select All Button */}
-                  <button
-                    onClick={handleSelectAll}
-                    className={cn(
-                      "flex items-center gap-2 h-9 px-3 rounded-lg border transition-colors text-sm font-medium",
-                      allSelected ? "bg-primary/10 border-primary/20 text-primary hover:bg-primary/20" : "border-border bg-background hover:bg-muted text-muted-foreground hover:text-foreground"
-                    )}
-                    title={allSelected ? "Deselect All" : "Select All"}
-                  >
-                    {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
-                    <span className="hidden sm:inline">{allSelected ? "Deselect All" : "Select All"}</span>
-                  </button>
-
-                  {/* Settings Button */}
-                  <button
-                    onClick={() => setShowCopySettings(!showCopySettings)}
-                    className={cn(
-                      "flex items-center justify-center h-9 w-9 rounded-lg border transition-colors",
-                      showCopySettings ? "bg-muted border-border text-foreground" : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
-                    )}
-                    title="Copy Settings"
-                  >
-                    <Settings className="h-4 w-4" />
-                  </button>
-
-                  {/* Copy Button */}
-                  <button
-                    onClick={handleCopy}
-                    disabled={selectedCodes.size === 0}
-                    className="flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground shadow-sm hover:bg-secondary/90 disabled:opacity-50"
-                  >
-                    <Copy className="h-4 w-4" />
-                    Copy Selected ({selectedCodes.size})
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Copy Settings Panel */}
-            {showCopySettings && results.length > 0 && (
-              <div className="rounded-lg border border-border bg-card p-4 shadow-sm space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">
-                      Format
-                    </label>
-                    <div className="flex flex-col gap-2">
-                      <label className="flex items-center gap-2 text-sm cursor-pointer">
-                        <input
-                          type="radio"
-                          checked={copyFormat === 'codes'}
-                          onChange={() => setCopyFormat('codes')}
-                          className="accent-primary"
-                        />
-                        <span>List of Codes Only</span>
-                      </label>
-                      <label className="flex items-center gap-2 text-sm cursor-pointer">
-                        <input
-                          type="radio"
-                          checked={copyFormat === 'description'}
-                          onChange={() => setCopyFormat('description')}
-                          className="accent-primary"
-                        />
-                        <span>Code + Description</span>
-                      </label>
-                    </div>
-                  </div>
-
-                  {copyFormat === 'codes' && (
-                    <div>
-                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">
-                        Delimiter
-                      </label>
-                      <select
-                        value={delimiter}
-                        onChange={(e) => setDelimiter(e.target.value as any)}
-                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <option value="newline">New Line</option>
-                        <option value="comma">Comma (, )</option>
-                        <option value="pipe">Pipe ( | )</option>
-                        <option value="semicolon">Semicolon (; )</option>
-                      </select>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {error && (
-              <div className="rounded-lg bg-destructive/10 p-4 text-sm text-destructive font-medium border border-destructive/20">
-                {error}
-              </div>
-            )}
-
-            {loading && (
-              <div className="flex flex-col items-center justify-center py-12 space-y-4 text-muted-foreground">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p>Cleaning and searching database...</p>
-              </div>
-            )}
-
-            {!loading && results.length === 0 && !error && (
-              <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-16 text-center text-muted-foreground">
-                <Search className="h-10 w-10 opacity-20 mb-3" />
-                <p>Enter codes and click Search to see results.</p>
-              </div>
-            )}
-
-            {/* Results List */}
-            {viewMode === 'table' && results.length > 0 ? (
-              <CodeTable
-                results={results}
-                selectedCodes={selectedCodes}
-                onToggleSelection={toggleSelection}
-              />
-            ) : (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                {results.map((result, index) => (
-                  <CodeCard
-                    key={`${result.code}-${index}`}
-                    codeData={result}
-                    isSelected={selectedCodes.has(result.code)}
-                    onSelect={
-                      // Disable selection for notfound items OR non-billing items
-                      (result.notFound || !result.validForBilling) ? undefined : (sel) => toggleSelection(result.code, sel)
-                    }
-                    isNotFound={result.notFound}
-                  />
-                ))}
-              </div>
-            )}
-
-
-
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }
