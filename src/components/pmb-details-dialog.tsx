@@ -16,6 +16,7 @@ interface PMBLink {
     asteriskCode: string;
     description: string;
     basketOfCare: string;
+    pmbCode?: string | null;
 }
 
 interface PMBDetailsDialogProps {
@@ -116,15 +117,19 @@ export function PMBDetailsDialog({
                                                 <div className="space-y-1.5 flex-1">
                                                     <div className="flex items-baseline gap-2">
                                                         <div className="font-mono font-bold text-primary text-base">
-                                                            {link.daggerCode} <span className="text-muted-foreground opacity-50">+</span> {link.asteriskCode}
+                                                            {link.daggerCode}<span className="text-muted-foreground opacity-50">+</span>{link.asteriskCode}<span className="text-muted-foreground opacity-50">*</span>
                                                         </div>
                                                     </div>
                                                     <div className="text-sm text-foreground/70 leading-snug">
                                                         {link.description}
                                                     </div>
-                                                    {link.basketOfCare && link.basketOfCare !== basketOfCare && (
+
+                                                    {/* Always show Basket info if present */}
+                                                    {(link.basketOfCare || link.pmbCode) && (
                                                         <div className="mt-3 inline-flex items-center gap-1.5 text-xs bg-secondary/10 text-secondary-foreground px-2.5 py-1 rounded-md font-medium">
-                                                            <span>Basket:</span> {link.basketOfCare}
+                                                            <span>Basket:</span>
+                                                            {link.pmbCode && <span className="font-mono font-bold mr-1">{link.pmbCode}</span>}
+                                                            {link.basketOfCare}
                                                         </div>
                                                     )}
                                                 </div>
