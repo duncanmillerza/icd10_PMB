@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
 import { Loader2, Search, Copy, Trash2 } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Ensure utils exists
 
 interface ICD10Result {
   code: string;
@@ -231,7 +230,7 @@ T24,2 (will be auto-corrected to T24.2)"
                 <div className="grid grid-cols-2 gap-4 text-xs font-mono">
                   <div className="bg-muted p-2 rounded overflow-auto max-h-32 whitespace-pre-wrap">{input}</div>
                   <div className="bg-muted p-2 rounded overflow-auto max-h-32">
-                    {results.map(r => r.code).join(', ')}
+                    {results.map(r => r.code).join(' | ')}
                   </div>
                 </div>
               </div>

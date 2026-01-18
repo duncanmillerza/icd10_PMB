@@ -46,7 +46,7 @@ export function CodeCard({ codeData, isSelected, onSelect }: CodeCardProps) {
                     "group relative flex flex-col gap-3 rounded-xl border p-5 transition-all duration-200",
                     "bg-card shadow-sm hover:shadow-md",
                     isSelected ? "ring-2 ring-primary border-primary" : "border-border hover:border-primary/50",
-                    !codeData.validForBilling && "bg-amber-50/50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30"
+                    !codeData.validForBilling && "bg-destructive/5 border-destructive/20"
                 )}
                 onClick={(e) => {
                     // Prevent marking as selected if clicking interactive elements inside
@@ -72,23 +72,34 @@ export function CodeCard({ codeData, isSelected, onSelect }: CodeCardProps) {
 
                     {/* Badges - Improved Contrast & Visibility */}
                     <div className="flex flex-wrap gap-2 justify-end">
+                        {/* Primary vs Secondary Badge */}
+                        {codeData.validPrimary ? (
+                            <span className="inline-flex items-center rounded-md bg-success/10 px-2.5 py-1 text-xs font-bold text-success ring-1 ring-inset ring-success/20">
+                                Primary
+                            </span>
+                        ) : (
+                            <span className="inline-flex items-center rounded-md bg-warning/10 px-2.5 py-1 text-xs font-bold text-warning ring-1 ring-inset ring-warning/20">
+                                Secondary Only
+                            </span>
+                        )}
+
                         {codeData.isPMB && (
-                            <span className="inline-flex items-center rounded-md bg-[#7c3aed] px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+                            <span className="inline-flex items-center rounded-md bg-secondary px-2.5 py-1 text-xs font-bold text-secondary-foreground shadow-sm">
                                 PMB
                             </span>
                         )}
                         {codeData.isDagger && (
-                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-sm" title="Dagger Code">
+                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary text-xs font-bold text-secondary-foreground shadow-sm" title="Dagger Code">
                                 †
                             </span>
                         )}
                         {codeData.isAsterisk && (
-                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white shadow-sm" title="Asterisk Code">
+                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-warning text-xs font-bold text-white shadow-sm" title="Asterisk Code">
                                 *
                             </span>
                         )}
                         {!codeData.validForBilling && (
-                            <span className="inline-flex items-center gap-1.5 rounded-md bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800 dark:bg-amber-900 dark:text-amber-100 border border-amber-200 dark:border-amber-800/50">
+                            <span className="inline-flex items-center gap-1.5 rounded-md bg-destructive/10 px-2.5 py-1 text-xs font-bold text-destructive ring-1 ring-inset ring-destructive/20">
                                 <AlertTriangle className="h-3.5 w-3.5" />
                                 No Billing
                             </span>

@@ -1,12 +1,12 @@
-[00:00:00.936] Server  LOG     ✓ Ready in 719ms
-[00:00:27.151] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:48.725] Browser LOG     Searching for: ["G82.5","N31.8","K59.2","S39.8","T24.2","L89.1","G95.8","W85.52","Z50.8"]
-[00:04:45.698] Browser LOG     Searching for: ["G82.5","N31.8","K59.2","S39.8","T24.2","L89.1","G95.8","W85.52","Z50.8","C70.1"]
-[00:05:50.352] Browser LOG     Searching for: ["G82.5","N31.8","K59.2","S39.8","T24.2","L89.1","G95.8","W85.52","Z50.8","C70.1","G13.1"]
-[00:17:41.326] Server  LOG     ✓ Compiled in 70ms
-[00:18:21.768] Server  LOG     ✓ Compiled in 215ms
-[00:18:47.470] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:19:02.216] Server  LOG     ✓ Compiled in 187ms
-[00:19:03.409] Server  LOG     ✓ Compiled in 63ms
-[00:19:04.959] Browser LOG     Searching for: ["G82.5","N31.8","K59.2","S39.8","T24.2","L89.1","G95.8","W85.52","Z50.8"]
-[00:19:05.783] Browser LOG     Searching for: ["G82.5","N31.8","K59.2","S39.8","T24.2","L89.1","G95.8","W85.52","Z50.8"]
+[00:00:00.913] Server  LOG     ✓ Ready in 687ms
+[00:00:06.819] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:28.432] Browser LOG     Searching for: ["I64"]
+[00:03:04.738] Browser LOG     Searching for: ["C70.1"]
+[00:03:10.534] Server  LOG     ✓ Compiled in 157ms
+[00:03:12.407] Server  LOG     ✓ Compiled in 57ms
+[00:04:24.067] Browser LOG     Searching for: ["C70.1"]
+[00:05:00.428] Server  LOG     ✓ Compiled in 121ms
+[00:07:03.900] Browser LOG     Searching for: ["C70.1"]
+[00:09:05.167] Browser LOG     Searching for: ["C70.1","I69.0"]
+[00:09:48.445] Browser LOG     Searching for: ["C70.1","I69.0","E10.2"]
+[00:10:52.153] Browser LOG     Searching for: ["C70.1","I69.0","E10.2","I69"]
