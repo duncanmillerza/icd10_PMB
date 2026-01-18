@@ -161,3 +161,6 @@ Import traces:
   Client Component SSR:
     ./src/app/page.tsx [Client Component SSR]
     ./src/app/page.tsx [Server Component]
+[01:06:13.930] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:06:26.871] Browser LOG     Searching for: ["I64","I10","G82.6"]
+[01:34:05.705] Server  LOG     ✓ Compiled in 54ms
