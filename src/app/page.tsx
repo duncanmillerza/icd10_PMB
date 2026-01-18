@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Shield, Users, Activity, FileText } from "lucide-react";
+import { ArrowRight, Activity, FileText, CheckCircle2, ShieldCheck, BarChart3, LayoutDashboard, Brain, Calendar, CreditCard, Laptop, Shield, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
@@ -12,8 +12,8 @@ export default function LandingPage() {
                     <span>Hadeda Health</span>
                 </div>
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+                    <Link href="#clinicians" className="text-muted-foreground hover:text-primary transition-colors">Philosophy</Link>
                     <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">Features</Link>
-                    <Link href="#security" className="text-muted-foreground hover:text-primary transition-colors">Security</Link>
                     <Link href="/icd10" className="text-primary font-semibold hover:underline decoration-2 underline-offset-4">ICD-10 Tool</Link>
                 </nav>
                 <div className="flex items-center gap-3">
@@ -61,44 +61,126 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                {/* Feature Grid */}
-                <section id="features" className="py-24 px-6 bg-secondary/5">
+                {/* Built by Clinicians Section */}
+                <section id="clinicians" className="py-24 px-6 bg-secondary/5">
                     <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-16">
-                            <h2 className="text-3xl font-bold tracking-tight mb-4">Everything you need to run your practice</h2>
-                            <p className="text-muted-foreground text-lg">Built with input from OTs, Physios, and Speech Therapists.</p>
+                        <div className="text-center mb-16 space-y-4">
+                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">Built by Clinicians, For Clinicians</h2>
+                            <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed">
+                                Developed by a physiotherapist who understands your daily challenges. Every feature is designed with one goal: helping you deliver the best possible patient care through smarter documentation and seamless workflows.
+                            </p>
                         </div>
 
                         <div className="grid md:grid-cols-3 gap-8">
                             <FeatureCard
-                                icon={<Users className="h-6 w-6 text-primary" />}
-                                title="Patient Management"
-                                description="Streamlined admission, discharge, and daily notes workflow. Track funding and authorization seamlessly."
-                            />
-                            <FeatureCard
-                                icon={<Shield className="h-6 w-6 text-primary" />}
-                                title="POPIA Compliant"
-                                description="Bank-grade security ensures your patient data is protected according to South African regulations."
-                            />
-                            <FeatureCard
                                 icon={<FileText className="h-6 w-6 text-primary" />}
-                                title="Automated Reporting"
-                                description="Generate professional progress reports and discharge summaries in a few clicks."
+                                title="AI-Assisted Report Writing"
+                                description="Focus more time on your patients while AI helps create comprehensive, accurate clinical reports."
+                            />
+                            <FeatureCard
+                                icon={<BarChart3 className="h-6 w-6 text-primary" />}
+                                title="Better Continuity of Care"
+                                description="Never miss critical patient information with seamless handovers and comprehensive treatment tracking."
+                            />
+                            <FeatureCard
+                                icon={<ShieldCheck className="h-6 w-6 text-primary" />}
+                                title="Patient-First Data Security"
+                                description="Your patients' trust is paramount - South African hosted servers with complete POPIA compliance."
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Key Features Section */}
+                <section id="features" className="py-24 px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">Key Features for Enhanced Practice Efficiency</h2>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {/* Row 1 */}
+                            <DetailedFeatureCard
+                                icon={<LayoutDashboard className="h-6 w-6" />}
+                                title="Clinician Dashboard"
+                                items={[
+                                    "Comprehensive view of outstanding notes and reports",
+                                    "Integrated team and personal reminders",
+                                    "Clinical statistics for billing motivation",
+                                    "Upcoming appointments and patient alerts",
+                                    "In-patient oversight for continuity of care"
+                                ]}
+                            />
+                            <DetailedFeatureCard
+                                icon={<Brain className="h-6 w-6" />}
+                                title="AI-Integrated Reporting"
+                                items={[
+                                    "Customisable report templates (WCA, discharge, MDT)",
+                                    "AI-powered treatment summaries",
+                                    "Medical history updates automation",
+                                    "Automated handovers for locum cover",
+                                    "Export to Word or PDF formats"
+                                ]}
+                            />
+                            <DetailedFeatureCard
+                                icon={<Calendar className="h-6 w-6" />}
+                                title="Scheduling & Workflows"
+                                items={[
+                                    "Intuitive drag-and-drop calendar",
+                                    "Co-treatments and group sessions",
+                                    "Integrated billing tracking and note management",
+                                    "Equipment tracking and alerts",
+                                    "Secure team chat (coming soon)"
+                                ]}
+                            />
+
+                            {/* Row 2 */}
+                            <DetailedFeatureCard
+                                icon={<CreditCard className="h-6 w-6" />}
+                                title="Medical Aid Integration"
+                                items={[
+                                    "Built-in email claims submission",
+                                    "EDI integration (coming soon)",
+                                    "Payment tracking & reconciliation",
+                                    "Full claim history & reporting",
+                                    "Patient portal for authorisation tracking"
+                                ]}
+                            />
+                            <DetailedFeatureCard
+                                icon={<Shield className="h-6 w-6" />}
+                                title="Security & Compliance"
+                                items={[
+                                    "South African server hosting",
+                                    "Local AI processing servers",
+                                    "Encrypted storage and transmission",
+                                    "Granular role-based access control",
+                                    "Complete POPIA compliance"
+                                ]}
+                            />
+                            <DetailedFeatureCard
+                                icon={<Laptop className="h-6 w-6" />}
+                                title="Access Anywhere"
+                                items={[
+                                    "Progressive Web App (PWA) functionality",
+                                    "Save to phone home screen",
+                                    "Offline work capability",
+                                    "Automatic data synchronisation",
+                                    "Fully responsive design"
+                                ]}
                             />
                         </div>
                     </div>
                 </section>
 
                 {/* ICD-10 Tool Section (Prominent) */}
-                <section className="py-24 px-6 relative overflow-hidden">
-                    <div className="absolute inset-0 -z-10 bg-primary/5"></div>
-                    <div className="max-w-4xl mx-auto bg-card border border-border rounded-3xl p-8 md:p-12 shadow-xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                <section className="py-24 px-6 relative overflow-hidden bg-secondary/10">
+                    <div className="max-w-5xl mx-auto bg-card border border-border rounded-3xl p-8 md:p-12 shadow-xl text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
                         <div className="space-y-4 max-w-lg">
                             <div className="inline-flex items-center gap-2 font-mono text-sm font-bold text-primary uppercase tracking-wider">
                                 <Activity className="h-4 w-4" /> Free Tool
                             </div>
                             <h2 className="text-3xl font-bold">Need to look up an ICD-10 Code?</h2>
-                            <p className="text-muted-foreground">
+                            <p className="text-muted-foreground text-lg">
                                 We've built a powerful, free tool to search codes, verify PMB status, and see Basket of Care details instantly. No login required.
                             </p>
                         </div>
@@ -131,12 +213,33 @@ export default function LandingPage() {
 
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
     return (
-        <div className="bg-card border border-border/50 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+        <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all text-center md:text-left h-full">
+            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 mx-auto md:mx-0 text-primary">
                 {icon}
             </div>
-            <h3 className="text-lg font-bold mb-2">{title}</h3>
-            <p className="text-muted-foreground leading-relaxed">{description}</p>
+            <h3 className="text-xl font-bold mb-3 text-primary">{title}</h3>
+            <p className="text-muted-foreground leading-relaxed text-balance">{description}</p>
+        </div>
+    );
+}
+
+function DetailedFeatureCard({ icon, title, items }: { icon: React.ReactNode, title: string, items: string[] }) {
+    return (
+        <div className="bg-card border border-border/50 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all h-full flex flex-col">
+            <div className="flex items-center gap-4 mb-6">
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                    {icon}
+                </div>
+                <h3 className="text-xl font-bold text-primary">{title}</h3>
+            </div>
+            <ul className="space-y-4 flex-1">
+                {items.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-muted-foreground">
+                        <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                        <span className="text-sm leading-relaxed">{item}</span>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
