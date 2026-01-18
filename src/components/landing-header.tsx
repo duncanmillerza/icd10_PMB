@@ -38,31 +38,31 @@ export function LandingHeader() {
 
             {/* Mobile Navigation Overlay */}
             {isMenuOpen && (
-                <div className="absolute top-16 left-0 w-full bg-background border-b border-border shadow-lg md:hidden flex flex-col p-6 gap-4 animate-in slide-in-from-top-2">
+                <div className="absolute top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background/95 backdrop-blur-md md:hidden flex flex-col items-center justify-center p-6 gap-8 animate-in slide-in-from-top-2 z-40">
                     <Link
                         href="#clinicians"
-                        className="text-lg font-medium text-foreground py-2 border-b border-border/50"
+                        className="text-2xl font-medium text-foreground hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
                         Philosophy
                     </Link>
                     <Link
                         href="#features"
-                        className="text-lg font-medium text-foreground py-2 border-b border-border/50"
+                        className="text-2xl font-medium text-foreground hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
                         Features
                     </Link>
                     <Link
                         href="/icd10"
-                        className="text-lg font-semibold text-primary py-2"
+                        className="text-2xl font-semibold text-primary hover:underline underline-offset-8 decoration-2"
                         onClick={() => setIsMenuOpen(false)}
                     >
                         ICD-10 Look-up Tool
                     </Link>
                     <Link
                         href="#contact"
-                        className="text-lg font-medium text-muted-foreground py-2"
+                        className="text-2xl font-medium text-muted-foreground hover:text-foreground transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
                         Contact
