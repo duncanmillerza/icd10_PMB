@@ -17,12 +17,7 @@ export default function LandingPage() {
                     <Link href="/icd10" className="text-primary font-semibold hover:underline decoration-2 underline-offset-4">ICD-10 Tool</Link>
                 </nav>
                 <div className="flex items-center gap-3">
-                    <Link href="https://hadedahealth.com" target="_blank">
-                        <Button variant="ghost" size="sm">Log In</Button>
-                    </Link>
-                    <Link href="https://hadedahealth.com" target="_blank">
-                        <Button size="sm">Get Started</Button>
-                    </Link>
+                    {/* Auth buttons removed per request */}
                 </div>
             </header>
 
@@ -31,6 +26,10 @@ export default function LandingPage() {
                 <section className="relative pt-20 pb-32 px-6 overflow-hidden">
                     <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
                     <div className="max-w-5xl mx-auto text-center space-y-8">
+                        <div className="flex justify-center mb-8">
+                            <img src="/Wordmark Mono.svg" alt="Hadeda Health" className="h-24 w-auto" />
+                        </div>
+
                         <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-medium text-primary">
                             <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
                             Now Available for Private Practice
