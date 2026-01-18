@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     locale: 'en_ZA',
     type: 'website',
   },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/web-app-manifest-192x192.png',
+  },
 };
 
 export const viewport = {
