@@ -18,6 +18,8 @@ interface ICD10Result {
   isSequelae: boolean;
   isPMB: boolean;
   basketOfCare: string | null;
+  pmbDescription?: string | null;
+  pmbComments?: string | null;
   pmbLinks?: any[];
   notFound?: boolean;
 }

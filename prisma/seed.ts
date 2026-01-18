@@ -35,6 +35,8 @@ async function main() {
             isSequelae: isY(row['Valid_ICD10_Sequelae']),
             isPMB: isY(row['PMB']),
             basketOfCare: row['PMB basket'] ? String(row['PMB basket']).trim() : null,
+            pmbDescription: row['PMB Description'] ? String(row['PMB Description']).trim() : null,
+            pmbComments: row['PMB Comment'] ? String(row['PMB Comment']).trim() : null,
         });
     }
 

@@ -18,6 +18,8 @@ model ICD10Code {
   isSequelae      Boolean 
   isPMB           Boolean 
   basketOfCare    String? 
+  pmbDescription  String?
+  pmbComments     String?
 }
 
 model PMBLink {

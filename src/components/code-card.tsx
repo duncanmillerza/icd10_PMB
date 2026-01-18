@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Check, AlertTriangle, Shield, ArrowRight, BookOpen } from 'lucide-react';
 import { LinkModal } from './link-modal';
+import { PMBDetailsDialog } from './pmb-details-dialog';
 
 interface ICD10Code {
     code: string;
@@ -15,6 +16,8 @@ interface ICD10Code {
     isSequelae: boolean;
     isPMB: boolean;
     basketOfCare: string | null;
+    pmbDescription?: string | null;
+    pmbComments?: string | null;
     pmbLinks?: PMBLink[];
 }
 
@@ -35,6 +38,7 @@ interface CodeCardProps {
 
 export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCardProps) {
     const [modalOpen, setModalOpen] = useState(false);
+    const [pmbDetailsOpen, setPmbDetailsOpen] = useState(false);
 
     const links = codeData.pmbLinks || [];
     const hasManyLinks = links.length > 3;
@@ -109,9 +113,17 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                         )}
 
                         {codeData.isPMB && (
-                            <span className="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-[10px] uppercase font-bold text-secondary-foreground shadow-sm">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setPmbDetailsOpen(true);
+                                }}
+                                className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-[10px] uppercase font-bold text-secondary-foreground shadow-sm hover:bg-secondary/80 transition-colors"
+                                title="Click for PMB details"
+                            >
+                                <Shield className="h-3 w-3" />
                                 PMB
-                            </span>
+                            </button>
                         )}
                         {codeData.isDagger && (
                             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-secondary-foreground shadow-sm" title="Dagger Code">
@@ -180,7 +192,10 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
 
                                 {hasManyLinks && (
                                     <button
-                                        onClick={() => setModalOpen(true)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setModalOpen(true);
+                                        }}
                                         className="w-full py-1.5 bg-muted/50 hover:bg-muted text-[10px] font-medium text-primary transition-colors text-center border-t border-border/50"
                                     >
                                         View {links.length - 3} more links...
@@ -196,6 +211,16 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
                 code={codeData.code}
+                links={links}
+            />
+
+            <PMBDetailsDialog
+                isOpen={pmbDetailsOpen}
+                onClose={() => setPmbDetailsOpen(false)}
+                code={codeData.code}
+                basketOfCare={codeData.basketOfCare}
+                pmbDescription={codeData.pmbDescription}
+                pmbComments={codeData.pmbComments}
                 links={links}
             />
         </>
