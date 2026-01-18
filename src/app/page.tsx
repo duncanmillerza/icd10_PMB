@@ -8,8 +8,7 @@ export default function LandingPage() {
             {/* Navigation */}
             <header className="px-6 h-16 flex items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md sticky top-0 z-50">
                 <div className="flex items-center gap-2 font-bold text-xl text-primary">
-                    <Activity className="h-6 w-6" />
-                    <span>Hadeda Health</span>
+                    <img src="/Logo Long Green.svg" alt="Hadeda Health" className="h-8 w-auto" />
                 </div>
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
                     <Link href="#clinicians" className="text-muted-foreground hover:text-primary transition-colors">Philosophy</Link>
@@ -32,7 +31,7 @@ export default function LandingPage() {
 
                         <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-sm font-medium text-primary">
                             <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
-                            Now Available for Private Practice
+                            Coming Soon for Private Practice
                         </div>
 
                         <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground text-balance">
