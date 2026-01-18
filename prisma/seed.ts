@@ -37,6 +37,7 @@ async function main() {
             basketOfCare: row['PMB basket'] ? String(row['PMB basket']).trim() : null,
             pmbDescription: row['PMB Description'] ? String(row['PMB Description']).trim() : null,
             pmbComments: row['PMB Comment'] ? String(row['PMB Comment']).trim() : null,
+            pmbCode: row['PMB Code'] ? String(row['PMB Code']).trim() : null,
         });
     }
 

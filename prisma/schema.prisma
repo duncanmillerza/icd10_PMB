@@ -20,6 +20,7 @@ model ICD10Code {
   basketOfCare    String? 
   pmbDescription  String?
   pmbComments     String?
+  pmbCode         String?
 }
 
 model PMBLink {

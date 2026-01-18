@@ -25,6 +25,7 @@ interface PMBDetailsDialogProps {
     basketOfCare: string | null;
     pmbDescription?: string | null;
     pmbComments?: string | null;
+    pmbCode?: string | null;
     links: PMBLink[];
 }
 
@@ -35,6 +36,7 @@ export function PMBDetailsDialog({
     basketOfCare,
     pmbDescription,
     pmbComments,
+    pmbCode,
     links,
 }: PMBDetailsDialogProps) {
     return (

@@ -20,6 +20,7 @@ interface ICD10Result {
   basketOfCare: string | null;
   pmbDescription?: string | null;
   pmbComments?: string | null;
+  pmbCode?: string | null;
   pmbLinks?: any[];
   notFound?: boolean;
 }
@@ -414,20 +415,8 @@ T24,2 (will be auto-corrected to T24.2)"
               </div>
             )}
 
-            {!loading && results.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-border">
-                <h3 className="text-sm font-semibold mb-2">Original Input vs Cleaned:</h3>
-                <div className="grid grid-cols-2 gap-4 text-xs font-mono">
-                  <div className="bg-muted p-2 rounded overflow-auto max-h-32 whitespace-pre-wrap">{input}</div>
-                  <div className="bg-muted p-2 rounded overflow-auto max-h-32">
-                    {results.map(r => r.code).join(' | ')}
-                  </div>
-                </div>
-              </div>
-            )}
 
           </div>
-        </div>
       </main>
     </div>
   );

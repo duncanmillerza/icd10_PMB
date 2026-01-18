@@ -18,6 +18,7 @@ interface ICD10Code {
     basketOfCare: string | null;
     pmbDescription?: string | null;
     pmbComments?: string | null;
+    pmbCode?: string | null;
     pmbLinks?: PMBLink[];
 }
 
@@ -180,6 +181,7 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                 basketOfCare={codeData.basketOfCare}
                 pmbDescription={codeData.pmbDescription}
                 pmbComments={codeData.pmbComments}
+                pmbCode={codeData.pmbCode}
                 links={links}
             />
         </>
