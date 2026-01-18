@@ -1,0 +1,1504 @@
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([typeof document === "object" ? document.currentScript : undefined,
+"[project]/src/lib/code-utils.ts [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+/**
+ * Extracts potential ICD-10 codes from raw input text.
+ * Handles common formatting issues:
+ * - Replaces ',' with '.' in codes (e.g. T24,2 -> T24.2)
+ * - Identifies codes starting with a letter followed by digits.
+ * - Handles various separators (semicolon, space, newline).
+ */ __turbopack_context__.s([
+    "extractCodes",
+    ()=>extractCodes
+]);
+function extractCodes(input) {
+    if (!input) return [];
+    // Normalize: 
+    // 1. Replace commas that look like decimal separators (digit,comma,digit) with dots.
+    //    Regex: /(\d),(\d)/g -> '$1.$2'
+    //    But care needed: "G82.5, N31.8" -> don't want "5.N". Space usually follows.
+    //    Only replace if immediately surrounded by digits? "T24,2" -> "T24.2". 
+    const normalized = input.replace(/(\w)(\,)(\d)/g, '$1.$3');
+    // Wait, T24,2 -> \w is 4, \d is 2. Correct.
+    // 2. Find matches. 
+    // Pattern: Letter + 2 digits + optional (dot + 1 or 2 digits).
+    // Some codes might be just Letter + 2 digits (A00).
+    // Some might be Letter + 2 digits + dot + 1 digit (A00.1).
+    // Some might be Letter + 2 digits + dot + 2 digits (W85.52).
+    // Regex: /[A-Z]\d{2}(\.\d{1,2})?/gi
+    // 
+    // User note: "letter indicates the start of a new code".
+    // So we can global match.
+    const regex = /[A-Z]\d{2}(\.\d{1,2})?/gi;
+    const matches = normalized.match(regex);
+    if (!matches) return [];
+    // Uppercase everything and deduplicate
+    return Array.from(new Set(matches.map((m)=>m.toUpperCase())));
+}
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/src/lib/utils.ts [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "cn",
+    ()=>cn
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/clsx/dist/clsx.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$tailwind$2d$merge$2f$dist$2f$bundle$2d$mjs$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/tailwind-merge/dist/bundle-mjs.mjs [app-client] (ecmascript)");
+;
+;
+function cn(...inputs) {
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$tailwind$2d$merge$2f$dist$2f$bundle$2d$mjs$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["twMerge"])((0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$clsx$2f$dist$2f$clsx$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["clsx"])(inputs));
+}
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/src/components/link-modal.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "LinkModal",
+    ()=>LinkModal
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/compiler-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as Search>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-right.js [app-client] (ecmascript) <export default as ArrowRight>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield.js [app-client] (ecmascript) <export default as Shield>");
+;
+var _s = __turbopack_context__.k.signature();
+'use client';
+;
+;
+;
+function LinkModal(t0) {
+    _s();
+    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(44);
+    if ($[0] !== "ec24a7eea9ccad00aa8a699c2b2a913a663704e2f20afffbec464c9194a7b6fc") {
+        for(let $i = 0; $i < 44; $i += 1){
+            $[$i] = Symbol.for("react.memo_cache_sentinel");
+        }
+        $[0] = "ec24a7eea9ccad00aa8a699c2b2a913a663704e2f20afffbec464c9194a7b6fc";
+    }
+    const { isOpen, onClose, code, links } = t0;
+    const [searchTerm, setSearchTerm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    if (!isOpen) {
+        return null;
+    }
+    let t1;
+    let t2;
+    let t3;
+    let t4;
+    let t5;
+    let t6;
+    if ($[1] !== code || $[2] !== links || $[3] !== onClose || $[4] !== searchTerm) {
+        let t7;
+        if ($[11] !== searchTerm) {
+            t7 = ({
+                "LinkModal[links.filter()]": (link)=>link.description.toLowerCase().includes(searchTerm.toLowerCase()) || link.daggerCode.toLowerCase().includes(searchTerm.toLowerCase()) || link.asteriskCode.toLowerCase().includes(searchTerm.toLowerCase())
+            })["LinkModal[links.filter()]"];
+            $[11] = searchTerm;
+            $[12] = t7;
+        } else {
+            t7 = $[12];
+        }
+        const filteredLinks = links.filter(t7);
+        t6 = "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200";
+        t3 = "w-full max-w-2xl bg-card rounded-xl shadow-2xl border border-border flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200";
+        let t8;
+        if ($[13] !== code) {
+            t8 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                className: "text-lg font-bold",
+                children: [
+                    "PMB Links for ",
+                    code
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 64,
+                columnNumber: 12
+            }, this);
+            $[13] = code;
+            $[14] = t8;
+        } else {
+            t8 = $[14];
+        }
+        let t9;
+        if ($[15] !== links.length) {
+            t9 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-sm text-muted-foreground",
+                children: [
+                    links.length,
+                    " associated conditions found"
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 72,
+                columnNumber: 12
+            }, this);
+            $[15] = links.length;
+            $[16] = t9;
+        } else {
+            t9 = $[16];
+        }
+        let t10;
+        if ($[17] !== t8 || $[18] !== t9) {
+            t10 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    t8,
+                    t9
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 80,
+                columnNumber: 13
+            }, this);
+            $[17] = t8;
+            $[18] = t9;
+            $[19] = t10;
+        } else {
+            t10 = $[19];
+        }
+        let t11;
+        if ($[20] === Symbol.for("react.memo_cache_sentinel")) {
+            t11 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                className: "h-5 w-5 text-muted-foreground"
+            }, void 0, false, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 89,
+                columnNumber: 13
+            }, this);
+            $[20] = t11;
+        } else {
+            t11 = $[20];
+        }
+        let t12;
+        if ($[21] !== onClose) {
+            t12 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: onClose,
+                className: "p-2 hover:bg-muted rounded-full transition-colors",
+                children: t11
+            }, void 0, false, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 96,
+                columnNumber: 13
+            }, this);
+            $[21] = onClose;
+            $[22] = t12;
+        } else {
+            t12 = $[22];
+        }
+        if ($[23] !== t10 || $[24] !== t12) {
+            t4 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex items-center justify-between p-4 border-b border-border",
+                children: [
+                    t10,
+                    t12
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 103,
+                columnNumber: 12
+            }, this);
+            $[23] = t10;
+            $[24] = t12;
+            $[25] = t4;
+        } else {
+            t4 = $[25];
+        }
+        let t13;
+        if ($[26] === Symbol.for("react.memo_cache_sentinel")) {
+            t13 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
+                className: "absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+            }, void 0, false, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 112,
+                columnNumber: 13
+            }, this);
+            $[26] = t13;
+        } else {
+            t13 = $[26];
+        }
+        let t14;
+        if ($[27] === Symbol.for("react.memo_cache_sentinel")) {
+            t14 = ({
+                "LinkModal[<input>.onChange]": (e)=>setSearchTerm(e.target.value)
+            })["LinkModal[<input>.onChange]"];
+            $[27] = t14;
+        } else {
+            t14 = $[27];
+        }
+        if ($[28] !== searchTerm) {
+            t5 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "p-4 border-b border-border bg-muted/30",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "relative",
+                    children: [
+                        t13,
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                            type: "text",
+                            placeholder: "Search links...",
+                            value: searchTerm,
+                            onChange: t14,
+                            className: "w-full pl-9 pr-4 py-2 rounded-lg border border-input bg-background text-sm outline-none focus:ring-2 focus:ring-ring"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/link-modal.tsx",
+                            lineNumber: 127,
+                            columnNumber: 99
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/link-modal.tsx",
+                    lineNumber: 127,
+                    columnNumber: 68
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 127,
+                columnNumber: 12
+            }, this);
+            $[28] = searchTerm;
+            $[29] = t5;
+        } else {
+            t5 = $[29];
+        }
+        t1 = "flex-1 overflow-y-auto p-4 space-y-3";
+        t2 = filteredLinks.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "text-center py-8 text-muted-foreground",
+            children: "No links match your search."
+        }, void 0, false, {
+            fileName: "[project]/src/components/link-modal.tsx",
+            lineNumber: 134,
+            columnNumber: 39
+        }, this) : filteredLinks.map(_LinkModalFilteredLinksMap);
+        $[1] = code;
+        $[2] = links;
+        $[3] = onClose;
+        $[4] = searchTerm;
+        $[5] = t1;
+        $[6] = t2;
+        $[7] = t3;
+        $[8] = t4;
+        $[9] = t5;
+        $[10] = t6;
+    } else {
+        t1 = $[5];
+        t2 = $[6];
+        t3 = $[7];
+        t4 = $[8];
+        t5 = $[9];
+        t6 = $[10];
+    }
+    let t7;
+    if ($[30] !== t1 || $[31] !== t2) {
+        t7 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: t1,
+            children: t2
+        }, void 0, false, {
+            fileName: "[project]/src/components/link-modal.tsx",
+            lineNumber: 155,
+            columnNumber: 10
+        }, this);
+        $[30] = t1;
+        $[31] = t2;
+        $[32] = t7;
+    } else {
+        t7 = $[32];
+    }
+    let t8;
+    if ($[33] !== onClose) {
+        t8 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "p-4 border-t border-border bg-muted/10 flex justify-end",
+            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: onClose,
+                className: "px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors",
+                children: "Done"
+            }, void 0, false, {
+                fileName: "[project]/src/components/link-modal.tsx",
+                lineNumber: 164,
+                columnNumber: 83
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/components/link-modal.tsx",
+            lineNumber: 164,
+            columnNumber: 10
+        }, this);
+        $[33] = onClose;
+        $[34] = t8;
+    } else {
+        t8 = $[34];
+    }
+    let t9;
+    if ($[35] !== t3 || $[36] !== t4 || $[37] !== t5 || $[38] !== t7 || $[39] !== t8) {
+        t9 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: t3,
+            children: [
+                t4,
+                t5,
+                t7,
+                t8
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/link-modal.tsx",
+            lineNumber: 172,
+            columnNumber: 10
+        }, this);
+        $[35] = t3;
+        $[36] = t4;
+        $[37] = t5;
+        $[38] = t7;
+        $[39] = t8;
+        $[40] = t9;
+    } else {
+        t9 = $[40];
+    }
+    let t10;
+    if ($[41] !== t6 || $[42] !== t9) {
+        t10 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: t6,
+            children: t9
+        }, void 0, false, {
+            fileName: "[project]/src/components/link-modal.tsx",
+            lineNumber: 184,
+            columnNumber: 11
+        }, this);
+        $[41] = t6;
+        $[42] = t9;
+        $[43] = t10;
+    } else {
+        t10 = $[43];
+    }
+    return t10;
+}
+_s(LinkModal, "+YdqPTpSlp4r5CWiFEQiF/UjThM=");
+_c = LinkModal;
+function _LinkModalFilteredLinksMap(link_0) {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "p-3 rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "flex gap-3",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
+                    className: "mt-1 h-4 w-4 shrink-0 text-muted-foreground"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/link-modal.tsx",
+                    lineNumber: 194,
+                    columnNumber: 151
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "space-y-1",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "font-medium text-sm",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "font-mono text-primary font-bold",
+                                    children: [
+                                        link_0.daggerCode,
+                                        " + ",
+                                        link_0.asteriskCode
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/link-modal.tsx",
+                                    lineNumber: 194,
+                                    columnNumber: 285
+                                }, this),
+                                ":",
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "ml-2",
+                                    children: link_0.description
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/link-modal.tsx",
+                                    lineNumber: 194,
+                                    columnNumber: 387
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/link-modal.tsx",
+                            lineNumber: 194,
+                            columnNumber: 248
+                        }, this),
+                        link_0.basketOfCare && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "flex items-center gap-2 text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded w-fit",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"], {
+                                    className: "h-3 w-3"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/link-modal.tsx",
+                                    lineNumber: 194,
+                                    columnNumber: 574
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    children: [
+                                        "Basket: ",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "font-medium text-foreground",
+                                            children: link_0.basketOfCare
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/link-modal.tsx",
+                                            lineNumber: 194,
+                                            columnNumber: 618
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/link-modal.tsx",
+                                    lineNumber: 194,
+                                    columnNumber: 604
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/link-modal.tsx",
+                            lineNumber: 194,
+                            columnNumber: 467
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/link-modal.tsx",
+                    lineNumber: 194,
+                    columnNumber: 221
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/link-modal.tsx",
+            lineNumber: 194,
+            columnNumber: 123
+        }, this)
+    }, link_0.id, false, {
+        fileName: "[project]/src/components/link-modal.tsx",
+        lineNumber: 194,
+        columnNumber: 10
+    }, this);
+}
+var _c;
+__turbopack_context__.k.register(_c, "LinkModal");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/src/components/code-card.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "CodeCard",
+    ()=>CodeCard
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/compiler-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check.js [app-client] (ecmascript) <export default as Check>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertTriangle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/triangle-alert.js [app-client] (ecmascript) <export default as AlertTriangle>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shield.js [app-client] (ecmascript) <export default as Shield>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-right.js [app-client] (ecmascript) <export default as ArrowRight>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/book-open.js [app-client] (ecmascript) <export default as BookOpen>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$link$2d$modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/link-modal.tsx [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
+'use client';
+;
+;
+;
+;
+;
+function CodeCard(t0) {
+    _s();
+    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(57);
+    if ($[0] !== "4696d1b4b253f9cbd12c7658d5ad144831258cbaba01bef07413489c13a343a5") {
+        for(let $i = 0; $i < 57; $i += 1){
+            $[$i] = Symbol.for("react.memo_cache_sentinel");
+        }
+        $[0] = "4696d1b4b253f9cbd12c7658d5ad144831258cbaba01bef07413489c13a343a5";
+    }
+    const { codeData, isSelected, onSelect } = t0;
+    const [modalOpen, setModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    let t1;
+    if ($[1] !== codeData.pmbLinks) {
+        t1 = codeData.pmbLinks || [];
+        $[1] = codeData.pmbLinks;
+        $[2] = t1;
+    } else {
+        t1 = $[2];
+    }
+    const links = t1;
+    const hasManyLinks = links.length > 3;
+    let t2;
+    if ($[3] !== hasManyLinks || $[4] !== links) {
+        t2 = hasManyLinks ? links.slice(0, 3) : links;
+        $[3] = hasManyLinks;
+        $[4] = links;
+        $[5] = t2;
+    } else {
+        t2 = $[5];
+    }
+    const displayedLinks = t2;
+    const t3 = isSelected ? "ring-2 ring-primary border-primary" : "border-border hover:border-primary/50";
+    const t4 = !codeData.validForBilling && "bg-amber-50/50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30";
+    let t5;
+    if ($[6] !== t3 || $[7] !== t4) {
+        t5 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("group relative flex flex-col gap-3 rounded-xl border p-5 transition-all duration-200", "bg-card shadow-sm hover:shadow-md", t3, t4);
+        $[6] = t3;
+        $[7] = t4;
+        $[8] = t5;
+    } else {
+        t5 = $[8];
+    }
+    let t6;
+    if ($[9] !== isSelected || $[10] !== onSelect) {
+        t6 = ({
+            "CodeCard[<div>.onClick]": (e)=>{
+                if (e.target.closest("button")) {
+                    return;
+                }
+                onSelect?.(!isSelected);
+            }
+        })["CodeCard[<div>.onClick]"];
+        $[9] = isSelected;
+        $[10] = onSelect;
+        $[11] = t6;
+    } else {
+        t6 = $[11];
+    }
+    let t7;
+    if ($[12] !== isSelected || $[13] !== onSelect) {
+        t7 = onSelect && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex h-6 w-6 items-center justify-center rounded-md border transition-colors cursor-pointer", isSelected ? "bg-primary border-primary text-primary-foreground shadow-sm" : "border-muted-foreground/30 bg-background group-hover:border-primary"),
+            children: isSelected && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__["Check"], {
+                className: "h-4 w-4"
+            }, void 0, false, {
+                fileName: "[project]/src/components/code-card.tsx",
+                lineNumber: 95,
+                columnNumber: 300
+            }, this)
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 95,
+            columnNumber: 22
+        }, this);
+        $[12] = isSelected;
+        $[13] = onSelect;
+        $[14] = t7;
+    } else {
+        t7 = $[14];
+    }
+    let t8;
+    if ($[15] !== codeData.code) {
+        t8 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+            className: "font-mono text-2xl font-bold tracking-tight text-foreground bg-muted/30 px-2 py-0.5 rounded-md",
+            children: codeData.code
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 104,
+            columnNumber: 10
+        }, this);
+        $[15] = codeData.code;
+        $[16] = t8;
+    } else {
+        t8 = $[16];
+    }
+    let t9;
+    if ($[17] !== t7 || $[18] !== t8) {
+        t9 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "flex items-center gap-3",
+            children: [
+                t7,
+                t8
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 112,
+            columnNumber: 10
+        }, this);
+        $[17] = t7;
+        $[18] = t8;
+        $[19] = t9;
+    } else {
+        t9 = $[19];
+    }
+    let t10;
+    if ($[20] !== codeData.isPMB) {
+        t10 = codeData.isPMB && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+            className: "inline-flex items-center rounded-md bg-[#7c3aed] px-2.5 py-1 text-xs font-bold text-white shadow-sm",
+            children: "PMB"
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 121,
+            columnNumber: 29
+        }, this);
+        $[20] = codeData.isPMB;
+        $[21] = t10;
+    } else {
+        t10 = $[21];
+    }
+    let t11;
+    if ($[22] !== codeData.isDagger) {
+        t11 = codeData.isDagger && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+            className: "inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-sm",
+            title: "Dagger Code",
+            children: "†"
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 129,
+            columnNumber: 32
+        }, this);
+        $[22] = codeData.isDagger;
+        $[23] = t11;
+    } else {
+        t11 = $[23];
+    }
+    let t12;
+    if ($[24] !== codeData.isAsterisk) {
+        t12 = codeData.isAsterisk && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+            className: "inline-flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white shadow-sm",
+            title: "Asterisk Code",
+            children: "*"
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 137,
+            columnNumber: 34
+        }, this);
+        $[24] = codeData.isAsterisk;
+        $[25] = t12;
+    } else {
+        t12 = $[25];
+    }
+    let t13;
+    if ($[26] !== codeData.validForBilling) {
+        t13 = !codeData.validForBilling && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+            className: "inline-flex items-center gap-1.5 rounded-md bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800 dark:bg-amber-900 dark:text-amber-100 border border-amber-200 dark:border-amber-800/50",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertTriangle$3e$__["AlertTriangle"], {
+                    className: "h-3.5 w-3.5"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/code-card.tsx",
+                    lineNumber: 145,
+                    columnNumber: 247
+                }, this),
+                "No Billing"
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 145,
+            columnNumber: 40
+        }, this);
+        $[26] = codeData.validForBilling;
+        $[27] = t13;
+    } else {
+        t13 = $[27];
+    }
+    let t14;
+    if ($[28] !== t10 || $[29] !== t11 || $[30] !== t12 || $[31] !== t13) {
+        t14 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "flex flex-wrap gap-2 justify-end",
+            children: [
+                t10,
+                t11,
+                t12,
+                t13
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 153,
+            columnNumber: 11
+        }, this);
+        $[28] = t10;
+        $[29] = t11;
+        $[30] = t12;
+        $[31] = t13;
+        $[32] = t14;
+    } else {
+        t14 = $[32];
+    }
+    let t15;
+    if ($[33] !== t14 || $[34] !== t9) {
+        t15 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "flex items-start justify-between gap-4",
+            children: [
+                t9,
+                t14
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 164,
+            columnNumber: 11
+        }, this);
+        $[33] = t14;
+        $[34] = t9;
+        $[35] = t15;
+    } else {
+        t15 = $[35];
+    }
+    let t16;
+    if ($[36] !== codeData.description) {
+        t16 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "text-base font-medium leading-relaxed text-muted-foreground pl-9",
+            children: codeData.description
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 173,
+            columnNumber: 11
+        }, this);
+        $[36] = codeData.description;
+        $[37] = t16;
+    } else {
+        t16 = $[37];
+    }
+    let t17;
+    if ($[38] !== codeData.basketOfCare || $[39] !== displayedLinks || $[40] !== hasManyLinks || $[41] !== links.length) {
+        t17 = (codeData.basketOfCare || links.length > 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "mt-3 ml-9 space-y-3",
+            children: [
+                codeData.basketOfCare && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex items-start gap-2 text-sm bg-primary/5 p-3 rounded-lg border border-primary/10",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shield$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Shield$3e$__["Shield"], {
+                            className: "mt-0.5 h-4 w-4 shrink-0 text-primary"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/code-card.tsx",
+                            lineNumber: 181,
+                            columnNumber: 222
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "font-bold text-foreground",
+                                    children: "Basket of Care: "
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/code-card.tsx",
+                                    lineNumber: 181,
+                                    columnNumber: 286
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "text-foreground/80",
+                                    children: codeData.basketOfCare
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/code-card.tsx",
+                                    lineNumber: 181,
+                                    columnNumber: 353
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/code-card.tsx",
+                            lineNumber: 181,
+                            columnNumber: 281
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/code-card.tsx",
+                    lineNumber: 181,
+                    columnNumber: 121
+                }, this),
+                links.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "rounded-lg border border-border bg-muted/30 overflow-hidden",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "bg-muted/50 px-3 py-2 border-b border-border flex items-center gap-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__["BookOpen"], {
+                                    className: "h-3.5 w-3.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/code-card.tsx",
+                                    lineNumber: 181,
+                                    columnNumber: 686
+                                }, this),
+                                "PMB Linked Conditions (",
+                                links.length,
+                                ")"
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/code-card.tsx",
+                            lineNumber: 181,
+                            columnNumber: 531
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "divide-y divide-border/50",
+                            children: displayedLinks.map({
+                                "CodeCard[displayedLinks.map()]": (link)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "p-3 text-sm hover:bg-muted/50 transition-colors",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
+                                                    className: "mt-1 h-3.5 w-3.5 shrink-0 text-muted-foreground"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/code-card.tsx",
+                                                    lineNumber: 182,
+                                                    columnNumber: 162
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "font-medium text-foreground",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "font-mono text-primary",
+                                                                    children: [
+                                                                        link.daggerCode,
+                                                                        " + ",
+                                                                        link.asteriskCode
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/src/components/code-card.tsx",
+                                                                    lineNumber: 182,
+                                                                    columnNumber: 286
+                                                                }, this),
+                                                                ":",
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "ml-1 text-muted-foreground",
+                                                                    children: link.description
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/code-card.tsx",
+                                                                    lineNumber: 182,
+                                                                    columnNumber: 374
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/components/code-card.tsx",
+                                                            lineNumber: 182,
+                                                            columnNumber: 241
+                                                        }, this),
+                                                        link.basketOfCare && link.basketOfCare !== codeData.basketOfCare && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "mt-1 text-xs text-primary/80 font-mono",
+                                                            children: [
+                                                                "->",
+                                                                " Basket: ",
+                                                                link.basketOfCare
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/components/code-card.tsx",
+                                                            lineNumber: 182,
+                                                            columnNumber: 519
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/code-card.tsx",
+                                                    lineNumber: 182,
+                                                    columnNumber: 236
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/code-card.tsx",
+                                            lineNumber: 182,
+                                            columnNumber: 134
+                                        }, this)
+                                    }, link.id, false, {
+                                        fileName: "[project]/src/components/code-card.tsx",
+                                        lineNumber: 182,
+                                        columnNumber: 55
+                                    }, this)
+                            }["CodeCard[displayedLinks.map()]"])
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/code-card.tsx",
+                            lineNumber: 181,
+                            columnNumber: 766
+                        }, this),
+                        hasManyLinks && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                            onClick: {
+                                "CodeCard[<button>.onClick]": ()=>setModalOpen(true)
+                            }["CodeCard[<button>.onClick]"],
+                            className: "w-full py-2 bg-muted/50 hover:bg-muted text-xs font-medium text-primary transition-colors text-center border-t border-border/50",
+                            children: [
+                                "View ",
+                                links.length - 3,
+                                " more links..."
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/code-card.tsx",
+                            lineNumber: 183,
+                            columnNumber: 71
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/code-card.tsx",
+                    lineNumber: 181,
+                    columnNumber: 454
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 181,
+            columnNumber: 58
+        }, this);
+        $[38] = codeData.basketOfCare;
+        $[39] = displayedLinks;
+        $[40] = hasManyLinks;
+        $[41] = links.length;
+        $[42] = t17;
+    } else {
+        t17 = $[42];
+    }
+    let t18;
+    if ($[43] !== t15 || $[44] !== t16 || $[45] !== t17 || $[46] !== t5 || $[47] !== t6) {
+        t18 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: t5,
+            onClick: t6,
+            children: [
+                t15,
+                t16,
+                t17
+            ]
+        }, void 0, true, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 196,
+            columnNumber: 11
+        }, this);
+        $[43] = t15;
+        $[44] = t16;
+        $[45] = t17;
+        $[46] = t5;
+        $[47] = t6;
+        $[48] = t18;
+    } else {
+        t18 = $[48];
+    }
+    let t19;
+    if ($[49] === Symbol.for("react.memo_cache_sentinel")) {
+        t19 = ({
+            "CodeCard[<LinkModal>.onClose]": ()=>setModalOpen(false)
+        })["CodeCard[<LinkModal>.onClose]"];
+        $[49] = t19;
+    } else {
+        t19 = $[49];
+    }
+    let t20;
+    if ($[50] !== codeData.code || $[51] !== links || $[52] !== modalOpen) {
+        t20 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$link$2d$modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["LinkModal"], {
+            isOpen: modalOpen,
+            onClose: t19,
+            code: codeData.code,
+            links: links
+        }, void 0, false, {
+            fileName: "[project]/src/components/code-card.tsx",
+            lineNumber: 217,
+            columnNumber: 11
+        }, this);
+        $[50] = codeData.code;
+        $[51] = links;
+        $[52] = modalOpen;
+        $[53] = t20;
+    } else {
+        t20 = $[53];
+    }
+    let t21;
+    if ($[54] !== t18 || $[55] !== t20) {
+        t21 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+            children: [
+                t18,
+                t20
+            ]
+        }, void 0, true);
+        $[54] = t18;
+        $[55] = t20;
+        $[56] = t21;
+    } else {
+        t21 = $[56];
+    }
+    return t21;
+}
+_s(CodeCard, "CMfkJY0oHKX43wkRh7WkxSiVV1E=");
+_c = CodeCard;
+var _c;
+__turbopack_context__.k.register(_c, "CodeCard");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/src/app/page.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>Home
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$code$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/code-utils.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$code$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/code-card.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as Search>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/copy.js [app-client] (ecmascript) <export default as Copy>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-client] (ecmascript) <export default as Trash2>");
+;
+var _s = __turbopack_context__.k.signature();
+'use client';
+;
+;
+;
+;
+function Home() {
+    _s();
+    const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [results, setResults] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [selectedCodes, setSelectedCodes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(new Set());
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const handleSearch = async ()=>{
+        setLoading(true);
+        setError(null);
+        setResults([]);
+        setSelectedCodes(new Set());
+        try {
+            const extracted = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$code$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["extractCodes"])(input);
+            if (extracted.length === 0) {
+                setLoading(false);
+                return;
+            }
+            console.log('Searching for:', extracted);
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    codes: extracted
+                })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to search');
+            }
+            const data = await response.json();
+            setResults(data.results || []);
+        } catch (err) {
+            console.error(err);
+            setError('An error occurred while searching. Please try again.');
+        } finally{
+            setLoading(false);
+        }
+    };
+    const toggleSelection = (code, isSelected)=>{
+        const newSet = new Set(selectedCodes);
+        if (isSelected) {
+            newSet.add(code);
+        } else {
+            newSet.delete(code);
+        }
+        setSelectedCodes(newSet);
+    };
+    const handleCopy = async ()=>{
+        if (selectedCodes.size === 0) return;
+        // Sort results by code order in results array
+        const textToCopy = results.filter((r)=>selectedCodes.has(r.code)).map((r_0)=>{
+            let line = `${r_0.code} - ${r_0.description}`;
+            if (r_0.basketOfCare) line += ` [Basket: ${r_0.basketOfCare}]`;
+            if (r_0.isPMB) line += ` [PMB]`;
+            return line;
+        }).join('\n');
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            alert('Copied to clipboard!');
+        } catch (err_0) {
+            console.error('Failed to copy', err_0);
+        }
+    };
+    const clearInput = ()=>{
+        setInput('');
+        setResults([]);
+        setSelectedCodes(new Set());
+        setError(null);
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "min-h-screen bg-background pb-20",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
+                className: "sticky top-0 z-10 border-b border-border/20 bg-[#2D6356] px-6 py-4 shadow-md",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "mx-auto flex max-w-5xl items-center justify-between",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center gap-3",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-8",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                    src: "/Wordmark Mono.svg",
+                                    alt: "Hadeda Health",
+                                    className: "h-full w-auto"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 99,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 98,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "h-6 w-px bg-white/20"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 102,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "text-lg font-medium text-white/90",
+                                children: "ICD-10 Look-up"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/page.tsx",
+                                lineNumber: 104,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/page.tsx",
+                        lineNumber: 96,
+                        columnNumber: 11
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/src/app/page.tsx",
+                    lineNumber: 95,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/app/page.tsx",
+                lineNumber: 94,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
+                className: "mx-auto max-w-5xl px-6 py-8",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "grid gap-8 lg:grid-cols-[1fr,1.5fr]",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "space-y-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "rounded-xl border border-border bg-card p-4 shadow-sm",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            htmlFor: "input",
+                                            className: "mb-2 block text-sm font-semibold text-foreground",
+                                            children: "Paste ICD-10 Codes"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 117,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                            id: "input",
+                                            className: "min-h-[300px] w-full resize-y rounded-lg border border-input bg-background p-4 font-mono text-sm leading-relaxed focus:border-ring focus:ring-2 focus:ring-ring/20 outline-none transition-all placeholder:text-muted-foreground",
+                                            placeholder: "Paste your codes here... Examples: G82.5; N31.8 K59.2 T24,2 (will be auto-corrected to T24.2)",
+                                            value: input,
+                                            onChange: (e)=>setInput(e.target.value)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 120,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "mt-4 flex gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: handleSearch,
+                                                    disabled: loading || !input.trim(),
+                                                    className: "flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed",
+                                                    children: [
+                                                        loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                            className: "animate-spin h-4 w-4"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/page.tsx",
+                                                            lineNumber: 128,
+                                                            columnNumber: 30
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
+                                                            className: "h-4 w-4"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/page.tsx",
+                                                            lineNumber: 128,
+                                                            columnNumber: 77
+                                                        }, this),
+                                                        loading ? 'Processing...' : 'Clean & Search'
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 127,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: clearInput,
+                                                    disabled: !input,
+                                                    className: "flex items-center justify-center rounded-lg border border-border bg-background px-4 py-2.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-all",
+                                                    title: "Clear",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                                                        className: "h-4 w-4"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/page.tsx",
+                                                        lineNumber: 133,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 132,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 126,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 116,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "rounded-lg border border-border/50 bg-muted/30 p-4 text-xs text-muted-foreground",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "font-semibold text-foreground mb-1",
+                                            children: "Tips:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 139,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                                            className: "list-disc pl-4 space-y-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Separators like commas, semicolons, and newlines are auto-detected."
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 141,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: 'Codes like "T24,2" are auto-corrected to "T24.2".'
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 142,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                                    children: "Results show PMB status and billing validity."
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 143,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 140,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 138,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 115,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "space-y-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-center justify-between",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                            className: "text-lg font-bold text-foreground",
+                                            children: [
+                                                "Results",
+                                                results.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "ml-2 text-sm font-normal text-muted-foreground",
+                                                    children: [
+                                                        "(",
+                                                        results.length,
+                                                        " found)"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 153,
+                                                    columnNumber: 40
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 151,
+                                            columnNumber: 15
+                                        }, this),
+                                        results.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                            onClick: handleCopy,
+                                            disabled: selectedCodes.size === 0,
+                                            className: "flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground shadow-sm hover:bg-secondary/90 disabled:opacity-50",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
+                                                    className: "h-4 w-4"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 157,
+                                                    columnNumber: 19
+                                                }, this),
+                                                "Copy Selected (",
+                                                selectedCodes.size,
+                                                ")"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 156,
+                                            columnNumber: 38
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 150,
+                                    columnNumber: 13
+                                }, this),
+                                error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "rounded-lg bg-destructive/10 p-4 text-sm text-destructive font-medium border border-destructive/20",
+                                    children: error
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 162,
+                                    columnNumber: 23
+                                }, this),
+                                loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex flex-col items-center justify-center py-12 space-y-4 text-muted-foreground",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                            className: "h-8 w-8 animate-spin text-primary"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 167,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            children: "Cleaning and searching database..."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 168,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 166,
+                                    columnNumber: 25
+                                }, this),
+                                !loading && results.length === 0 && !error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex flex-col items-center justify-center rounded-xl border border-dashed border-border py-16 text-center text-muted-foreground",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
+                                            className: "h-10 w-10 opacity-20 mb-3"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 172,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            children: "Enter codes and click Search to see results."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 173,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 171,
+                                    columnNumber: 60
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-4",
+                                    children: results.map((code_0)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$code$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CodeCard"], {
+                                            codeData: code_0,
+                                            isSelected: selectedCodes.has(code_0.code),
+                                            onSelect: (sel)=>toggleSelection(code_0.code, sel)
+                                        }, code_0.code, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 177,
+                                            columnNumber: 38
+                                        }, this))
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 176,
+                                    columnNumber: 13
+                                }, this),
+                                !loading && results.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "mt-8 pt-8 border-t border-border",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            className: "text-sm font-semibold mb-2",
+                                            children: "Original Input vs Cleaned:"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 181,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "grid grid-cols-2 gap-4 text-xs font-mono",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "bg-muted p-2 rounded overflow-auto max-h-32 whitespace-pre-wrap",
+                                                    children: input
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 183,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "bg-muted p-2 rounded overflow-auto max-h-32",
+                                                    children: results.map((r_1)=>r_1.code).join(', ')
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/page.tsx",
+                                                    lineNumber: 184,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/page.tsx",
+                                            lineNumber: 182,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/page.tsx",
+                                    lineNumber: 180,
+                                    columnNumber: 48
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/page.tsx",
+                            lineNumber: 149,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/app/page.tsx",
+                    lineNumber: 112,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/src/app/page.tsx",
+                lineNumber: 111,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/app/page.tsx",
+        lineNumber: 92,
+        columnNumber: 10
+    }, this);
+}
+_s(Home, "ulCo8N2b4OUdqNhIOr88b+GhM2s=");
+_c = Home;
+var _c;
+__turbopack_context__.k.register(_c, "Home");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+]);
+
+//# sourceMappingURL=src_16a2924d._.js.map

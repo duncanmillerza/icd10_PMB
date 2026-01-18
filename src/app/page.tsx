@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { extractCodes } from '@/lib/code-utils';
 import { CodeCard } from '@/components/code-card';
-import { Loader2, Search, Copy, CheckCircle, Trash2 } from 'lucide-react';
+import { Loader2, Search, Copy, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils'; // Ensure utils exists
 
 interface ICD10Result {
@@ -89,7 +89,6 @@ export default function Home() {
 
     try {
       await navigator.clipboard.writeText(textToCopy);
-      // Optional: Toast gratification? Use simple alert or visual feedback if shadcn/toast not avail.
       alert('Copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy', err);
@@ -106,14 +105,18 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-border bg-background/80 px-6 py-4 backdrop-blur-md">
+      <header className="sticky top-0 z-10 border-b border-border/20 bg-[#2D6356] px-6 py-4 shadow-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-primary/20 p-1.5 text-primary">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
+            {/* Logo */}
+            <div className="h-8">
+              <img src="/Wordmark Mono.svg" alt="Hadeda Health" className="h-full w-auto" />
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground">
-              Hadeda Health <span className="opacity-50">|</span> ICD-10 Look-up
+            {/* Divider */}
+            <div className="h-6 w-px bg-white/20"></div>
+            {/* App Name */}
+            <h1 className="text-lg font-medium text-white/90">
+              ICD-10 Look-up
             </h1>
           </div>
         </div>
