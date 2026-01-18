@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius: 0.625rem;
+
+  /* HadedaHealth brand colors - OKLCH primary with HSL/HEX fallbacks */
+  --color-primary: oklch(0.4587 0.0617 175.54); /* Hadeda Green - perceptually uniform */
+  --color-primary-foreground: oklch(1 0 0); /* White */
+  --color-secondary: oklch(0.35 0.08 240); /* Healthcare Blue */
+  --color-secondary-foreground: oklch(1 0 0); /* White */
+  --color-destructive: oklch(0.48 0.15 14); /* Medical Rose */
+  --color-destructive-foreground: oklch(1 0 0); /* White */
+  --color-success: oklch(0.55 0.15 145); /* Success Green */
+  --color-warning: oklch(0.65 0.15 50); /* Warning Orange */
+
+  /* Light theme semantic colors */
+  --color-background: oklch(1 0 0); /* Pure white */
+  --color-foreground: oklch(0.2 0.02 240); /* Very dark gray */
+  --color-card: oklch(0.98 0.005 240); /* Very light gray */
+  --color-card-foreground: oklch(0.2 0.02 240);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.2 0.02 240);
+  --color-muted: oklch(0.96 0.01 240);
+  --color-muted-foreground: oklch(0.55 0.015 240);
+  --color-accent: oklch(0.96 0.01 240);
+  --color-accent-foreground: oklch(0.2 0.02 240);
+  --color-border: oklch(0.91 0.005 240);
+  --color-input: oklch(0.91 0.005 240);
+  --color-ring: oklch(0.35 0.08 164); /* Primary for focus rings */
+
+  /* Navbar colors - light theme uses primary green */
+  --color-navbar: var(--color-primary);
+  --color-navbar-foreground: var(--color-primary-foreground);
+
+  /* Font Sizes - Medical optimized */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1;
+
+  --text-metric-sm: 1.25rem;
+  --text-metric-sm--line-height: 1.5rem;
+  --text-metric-sm--font-weight: 700;
+  
+  --text-metric: 1.5rem;
+  --text-metric--line-height: 1.75rem;
+  --text-metric--font-weight: 700;
+  
+  --text-metric-lg: 2.25rem;
+  --text-metric-lg--line-height: 2.5rem;
+  --text-metric-lg--font-weight: 700;
+
+  /* Spacing */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  --spacing-104: 26rem;
+  --spacing-112: 28rem;
+  --spacing-form-gap: 1.5rem;
+  --spacing-field-gap: 1rem;
+  --spacing-section-gap: 2rem;
+}
+
+.dark {
+  /* Dark mode overrides - semantic tokens only */
+  --color-background: oklch(0.08 0.005 240); /* Very dark blue-gray */
+  --color-foreground: oklch(0.98 0.005 240); /* Near white */
+  --color-card: oklch(0.13 0.01 240); /* Dark gray-blue */
+  --color-card-foreground: oklch(0.98 0.005 240);
+  --color-popover: oklch(0.15 0.01 240);
+  --color-popover-foreground: oklch(0.98 0.005 240);
+  --color-muted: oklch(0.15 0.01 240);
+  --color-muted-foreground: oklch(0.85 0.005 240);
+  --color-accent: oklch(0.23 0.01 240);
+  --color-accent-foreground: oklch(0.98 0.005 240);
+  --color-secondary: oklch(0.68 0.15 240); /* Brighter blue for visibility */
+  --color-destructive: oklch(0.65 0.2 15); /* Brighter rose for visibility */
+  --color-border: oklch(0.23 0.01 240);
+  --color-input: oklch(0.23 0.01 240);
+
+  /* Navbar colors - dark theme uses dark blue-gray */
+  --color-navbar: oklch(0.15 0.02 240); /* Dark blue-gray */
+  --color-navbar-foreground: oklch(0.98 0.005 240); /* Near white */
+}
+
+/* Base styles */
+@layer base {
+  * {
+    border-color: var(--color-border);
+    outline-color: color-mix(in oklch, var(--color-ring), transparent 50%);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Component utilities */
+@layer components {
+  .metric-number {
+    @apply text-2xl font-bold tracking-tight;
+  }
+
+  .metric-large {
+    @apply text-3xl font-bold tracking-tight;
+  }
+  
+  .glass-effect {
+    background-color: color-mix(in oklch, white, transparent 20%);
+    backdrop-filter: blur(8px);
+    border-color: color-mix(in oklch, white, transparent 80%);
+  }
+
+  .dark .glass-effect {
+    background-color: color-mix(in oklch, black, transparent 60%);
+    border-color: color-mix(in oklch, white, transparent 90%);
+  }
+}

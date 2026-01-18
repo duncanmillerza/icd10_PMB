@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ICD10Code {
+  code            String  @id @unique
+  description     String
+  validForBilling Boolean
+  validPrimary    Boolean 
+  isAsterisk      Boolean 
+  isDagger        Boolean 
+  isSequelae      Boolean 
+  isPMB           Boolean 
+  basketOfCare    String? 
+}
+
+model PMBLink {
+  id              Int     @id @default(autoincrement())
+  daggerCode      String
+  asteriskCode    String
+  description     String
+  basketOfCare    String
+}
