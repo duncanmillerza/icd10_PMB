@@ -54,77 +54,78 @@ export function PMBDetailsDialog({
 
                         {/* PMB Code - High Visibility */}
                         {pmbCode && (
-                            <div className="rounded-xl border border-primary/20 bg-primary/5 p-4">
-                                <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-primary mb-2">
-                                    <Shield className="h-4 w-4" /> PMB Code
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
+                                    PMB Code
                                 </h4>
-                                <div className="text-2xl font-mono font-bold text-foreground">
+                                <div className="text-3xl font-mono font-bold text-foreground tracking-tight">
                                     {pmbCode}
                                 </div>
                             </div>
                         )}
 
-                        {/* Basket of Care - Distinct Box */}
+                        {/* Basket of Care */}
                         {basketOfCare && (
-                            <div className="rounded-xl border border-secondary/30 bg-secondary/10 p-4">
-                                <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-secondary-foreground/80 mb-2">
-                                    <Shield className="h-4 w-4" /> Basket of Care
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
+                                    Basket of Care
                                 </h4>
-                                <p className="font-medium text-lg leading-relaxed text-foreground">
+                                <p className="font-medium text-lg leading-relaxed text-foreground/90">
                                     {basketOfCare}
                                 </p>
                             </div>
                         )}
 
-                        {/* Description - Canvas Card */}
+                        {/* Description */}
                         {pmbDescription && (
-                            <div className="rounded-xl border border-border bg-card shadow-sm p-4">
-                                <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground mb-2">
-                                    <FileText className="h-4 w-4" /> Description
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
+                                    Description
                                 </h4>
-                                <p className="text-base text-foreground/90 leading-7">
+                                <p className="text-base text-muted-foreground leading-7">
                                     {pmbDescription}
                                 </p>
                             </div>
                         )}
 
-                        {/* Comments - Note Style */}
+                        {/* Comments */}
                         {pmbComments && (
-                            <div className="rounded-xl border border-orange-200 bg-orange-50/50 p-4 dark:bg-orange-950/20 dark:border-orange-900">
-                                <h4 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-orange-700 dark:text-orange-400 mb-2">
-                                    <Info className="h-4 w-4" /> Comments
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                                <h4 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-4">
+                                    Comments
                                 </h4>
-                                <div className="text-sm text-foreground/80 italic leading-relaxed">
+                                <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                     {pmbComments}
                                 </div>
                             </div>
                         )}
 
-                        {/* Linked Codes - List Group */}
+                        {/* Linked Codes */}
                         {links && links.length > 0 && (
-                            <div className="space-y-3 pt-4 border-t-2 border-dashed">
-                                <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
-                                    <span>Linked PMB Conditions</span>
-                                    <Badge variant="outline" className="text-xs font-mono">{links.length}</Badge>
-                                </h4>
-                                <div className="grid gap-2.5">
+                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h4 className="text-sm font-semibold text-foreground">
+                                        Linked PMB Conditions
+                                    </h4>
+                                    <Badge variant="secondary" className="font-mono">{links.length}</Badge>
+                                </div>
+                                <div className="grid gap-3">
                                     {links.map((link) => (
-                                        <div key={link.id} className="group relative overflow-hidden rounded-lg border bg-card hover:border-primary/50 transition-all duration-200 hover:shadow-sm">
-                                            <div className="flex flex-col sm:flex-row sm:items-start gap-3 p-3">
-                                                <div className="shrink-0 mt-0.5">
+                                        <div key={link.id} className="group relative rounded-lg border border-border hover:border-primary/50 bg-background p-4 transition-all hover:shadow-sm">
+                                            <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                                                <div className="shrink-0 pt-1">
                                                     <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <div className="font-mono font-bold text-primary text-base">
-                                                        {link.daggerCode} <span className="text-muted-foreground">+</span> {link.asteriskCode}
+                                                <div className="space-y-1.5 flex-1">
+                                                    <div className="font-mono font-bold text-foreground text-base">
+                                                        {link.daggerCode} <span className="text-muted-foreground mx-1">+</span> {link.asteriskCode}
                                                     </div>
-                                                    <div className="text-sm text-foreground/80 leading-snug">
+                                                    <div className="text-sm text-muted-foreground leading-snug">
                                                         {link.description}
                                                     </div>
                                                     {link.basketOfCare && link.basketOfCare !== basketOfCare && (
-                                                        <div className="mt-2 inline-flex items-center gap-1.5 text-xs bg-secondary/10 text-secondary-foreground px-2 py-1 rounded font-medium border border-secondary/10">
-                                                            <Shield className="h-3 w-3" />
-                                                            Basket: {link.basketOfCare}
+                                                        <div className="mt-3 inline-flex items-center gap-1.5 text-xs bg-secondary/10 text-secondary-foreground px-2.5 py-1 rounded-md font-medium">
+                                                            <span>Basket:</span> {link.basketOfCare}
                                                         </div>
                                                     )}
                                                 </div>
