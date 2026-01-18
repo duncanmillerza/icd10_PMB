@@ -14,7 +14,7 @@ export default function manifest(): MetadataRoute.Manifest {
                 src: '/Mobile Icon.svg',
                 sizes: 'any',
                 type: 'image/svg+xml',
-                purpose: 'any maskable',
+                purpose: 'maskable',
             },
             {
                 src: '/favicon.ico',
