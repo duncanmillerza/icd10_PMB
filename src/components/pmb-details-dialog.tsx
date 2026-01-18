@@ -17,7 +17,11 @@ interface PMBLink {
     description: string;
     basketOfCare: string;
     pmbCode?: string | null;
+    pmbDescription?: string | null;
 }
+// ... (props interface unchanged) ...
+
+
 
 interface PMBDetailsDialogProps {
     isOpen: boolean;
@@ -126,10 +130,19 @@ export function PMBDetailsDialog({
 
                                                     {/* Always show Basket info if present */}
                                                     {(link.basketOfCare || link.pmbCode) && (
-                                                        <div className="mt-3 inline-flex items-center gap-1.5 text-xs bg-secondary/10 text-secondary-foreground px-2.5 py-1 rounded-md font-medium">
-                                                            <span>Basket:</span>
-                                                            {link.pmbCode && <span className="font-mono font-bold mr-1">{link.pmbCode}</span>}
-                                                            {link.basketOfCare}
+                                                        <div className="mt-3 flex flex-col gap-1 text-xs bg-secondary/10 text-secondary-foreground px-3 py-2 rounded-md font-medium">
+                                                            <div className="flex items-baseline gap-2">
+                                                                <span className="shrink-0 opacity-70 uppercase tracking-widest text-[10px]">PMB</span>
+                                                                <span>
+                                                                    {link.pmbCode && <span className="font-mono font-bold mr-1">{link.pmbCode}</span>}
+                                                                    {link.pmbDescription && <span className="opacity-90">{link.pmbDescription}</span>}
+                                                                </span>
+                                                            </div>
+                                                            {link.basketOfCare && (
+                                                                <div className="border-t border-secondary/20 pt-1.5 mt-0.5 opacity-80 font-normal leading-relaxed">
+                                                                    {link.basketOfCare}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </div>
