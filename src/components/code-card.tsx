@@ -154,17 +154,7 @@ export function CodeCard({ codeData, isSelected, onSelect, isNotFound }: CodeCar
                 </div>
 
                 {/* Additional Details */}
-                {codeData.basketOfCare && (
-                    <div className="mt-2 ml-7 space-y-2">
-                        <div className="flex items-center gap-2 text-xs bg-primary/5 p-2 rounded-lg border border-primary/10">
-                            <Shield className="h-3.5 w-3.5 shrink-0 text-primary" />
-                            <div>
-                                <span className="font-bold text-foreground">Basket: </span>
-                                <span className="text-foreground/80">{codeData.basketOfCare}</span>
-                            </div>
-                        </div>
-                    </div>
-                )}
+
             </div>
 
             <LinkModal
