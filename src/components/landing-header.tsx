@@ -38,7 +38,7 @@ export function LandingHeader() {
 
             {/* Mobile Navigation Overlay */}
             {isMenuOpen && (
-                <div className="absolute top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background/95 backdrop-blur-md md:hidden flex flex-col items-center justify-center p-6 gap-8 animate-in slide-in-from-top-2 z-40">
+                <div className="absolute top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background/60 backdrop-blur-xl md:hidden flex flex-col items-center justify-center p-6 gap-8 animate-in slide-in-from-top-2 z-40">
                     <Link
                         href="#clinicians"
                         className="text-2xl font-medium text-foreground hover:text-primary transition-colors"
