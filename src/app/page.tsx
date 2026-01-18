@@ -36,7 +36,7 @@ export default function Home() {
   // Copy Settings State
   const [showCopySettings, setShowCopySettings] = useState(false);
   const [copyFormat, setCopyFormat] = useState<'codes' | 'description'>('codes');
-  const [delimiter, setDelimiter] = useState<'newline' | 'comma' | 'pipe' | 'semicolon'>('newline');
+  const [delimiter, setDelimiter] = useState<'newline' | 'comma' | 'pipe' | 'semicolon'>('pipe');
 
   const handleSearch = async () => {
     setLoading(true);
