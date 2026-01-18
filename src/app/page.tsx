@@ -35,7 +35,7 @@ export default function Home() {
 
   // Copy Settings State
   const [showCopySettings, setShowCopySettings] = useState(false);
-  const [copyFormat, setCopyFormat] = useState<'full' | 'codes'>('full');
+  const [copyFormat, setCopyFormat] = useState<'codes' | 'description'>('codes');
   const [delimiter, setDelimiter] = useState<'newline' | 'comma' | 'pipe' | 'semicolon'>('newline');
 
   const handleSearch = async () => {
@@ -131,13 +131,8 @@ export default function Home() {
     const sortedResults = results.filter(r => selectedCodes.has(r.code));
     let textToCopy = '';
 
-    if (copyFormat === 'full') {
-      textToCopy = sortedResults.map(r => {
-        let line = `${r.code} - ${r.description}`;
-        if (r.basketOfCare) line += ` [Basket: ${r.basketOfCare}]`;
-        if (r.isPMB) line += ` [PMB]`;
-        return line;
-      }).join('\n');
+    if (copyFormat === 'description') {
+      textToCopy = sortedResults.map(r => `${r.code} - ${r.description}`).join('\n');
     } else {
       const sep = delimiter === 'newline' ? '\n' :
         delimiter === 'comma' ? ', ' :
@@ -332,20 +327,20 @@ T24,2 (will be auto-corrected to T24.2)"
                       <label className="flex items-center gap-2 text-sm cursor-pointer">
                         <input
                           type="radio"
-                          checked={copyFormat === 'full'}
-                          onChange={() => setCopyFormat('full')}
-                          className="accent-primary"
-                        />
-                        <span>Code + Description + Details</span>
-                      </label>
-                      <label className="flex items-center gap-2 text-sm cursor-pointer">
-                        <input
-                          type="radio"
                           checked={copyFormat === 'codes'}
                           onChange={() => setCopyFormat('codes')}
                           className="accent-primary"
                         />
                         <span>List of Codes Only</span>
+                      </label>
+                      <label className="flex items-center gap-2 text-sm cursor-pointer">
+                        <input
+                          type="radio"
+                          checked={copyFormat === 'description'}
+                          onChange={() => setCopyFormat('description')}
+                          className="accent-primary"
+                        />
+                        <span>Code + Description</span>
                       </label>
                     </div>
                   </div>
