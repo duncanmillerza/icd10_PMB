@@ -90,11 +90,11 @@ export function PMBDetailsDialog({
 
                         {/* Comments */}
                         {pmbComments && (
-                            <div className="rounded-xl border border-border bg-card p-6 shadow-sm border-l-4 border-l-orange-500/50 transition-all hover:shadow-md">
-                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-orange-600 dark:text-orange-400 mb-3">
+                            <div className="rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-sm border-l-4 border-l-primary transition-all hover:shadow-md">
+                                <h4 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-3">
                                     <Info className="h-4 w-4" /> Comments
                                 </h4>
-                                <div className="text-sm text-foreground/80 italic leading-relaxed whitespace-pre-wrap bg-orange-50/50 dark:bg-orange-950/20 p-3 rounded-lg -mx-1">
+                                <div className="text-sm text-foreground/80 italic leading-relaxed whitespace-pre-wrap">
                                     {pmbComments}
                                 </div>
                             </div>
