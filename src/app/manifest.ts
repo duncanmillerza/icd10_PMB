@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: 'Hadeda Health ICD-10 Look-up',
         short_name: 'ICD-10',
         description: 'ICD-10 Code Look-up and Helper Tool',
-        start_url: '/',
+        start_url: '/icd10',
         display: 'standalone',
         background_color: '#ffffff',
         theme_color: '#2D6356',
