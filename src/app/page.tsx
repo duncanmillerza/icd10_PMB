@@ -254,9 +254,8 @@ export default function LandingPage() {
 
             <footer className="py-12 px-6 border-t border-border bg-muted/20">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                        <Activity className="h-5 w-5" />
-                        <span className="font-semibold text-foreground">Hadeda Health</span>
+                    <div className="flex items-center gap-4 text-muted-foreground">
+                        <img src="/Wordmark Long Green.svg" alt="Hadeda Health" className="h-6 w-auto opacity-80 grayscale hover:grayscale-0 transition-all cursor-pointer" />
                         <span className="text-sm">© {new Date().getFullYear()}</span>
                     </div>
                     <div className="flex gap-6 text-sm text-muted-foreground">
