@@ -64,10 +64,10 @@ export default function Home() {
 
       const data = await response.json();
       const foundResults = data.results || [];
-      const foundCodesMap = new Map(foundResults.map((r: ICD10Result) => [r.code, r]));
+      const foundCodesMap = new Map<string, ICD10Result>(foundResults.map((r: ICD10Result) => [r.code, r]));
 
       // Map extracted codes to results, filling in "Not Found" placeholders where needed
-      const finalResults = extracted.map((code: string) => {
+      const finalResults: ICD10Result[] = extracted.map((code: string) => {
         if (foundCodesMap.has(code)) {
           return foundCodesMap.get(code)!;
         }
@@ -83,8 +83,8 @@ export default function Home() {
           isPMB: false,
           basketOfCare: null,
           notFound: true,
-          pmbLinks: [] // Add empty array to satisfy type
-        } as ICD10Result;
+          pmbLinks: []
+        };
       });
 
       setResults(finalResults);
