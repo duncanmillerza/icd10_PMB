@@ -1,24 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, Activity, FileText, CheckCircle2, ShieldCheck, BarChart3, LayoutDashboard, Brain, Calendar, CreditCard, Laptop, Shield, User, Phone, Mail, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LandingHeader } from "@/components/landing-header";
 
 export default function LandingPage() {
     return (
         <div className="flex flex-col min-h-screen bg-background text-foreground">
             {/* Navigation */}
-            <header className="px-6 h-16 flex items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md sticky top-0 z-50">
-                <div className="flex items-center gap-2 font-bold text-xl text-primary">
-                    <img src="/Logo Long Green.svg" alt="Hadeda Health" className="h-8 w-auto" />
-                </div>
-                <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <Link href="#clinicians" className="text-muted-foreground hover:text-primary transition-colors">Philosophy</Link>
-                    <Link href="#features" className="text-muted-foreground hover:text-primary transition-colors">Features</Link>
-                    <Link href="/icd10" className="text-primary font-semibold hover:underline decoration-2 underline-offset-4">ICD-10 Tool</Link>
-                </nav>
-                <div className="flex items-center gap-3">
-                    {/* Auth buttons removed per request */}
-                </div>
-            </header>
+            <LandingHeader />
 
             <main className="flex-1">
                 {/* Hero Section */}
